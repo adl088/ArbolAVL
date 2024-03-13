@@ -1,19 +1,19 @@
-package arbolavl;
+
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 
 /**
  *
  * @author andre
  */
-import java.io.BufferedReader;
-import java.io.FileWriter;
-import java.io.*;
-import java.io.PrintWriter;
-import java.util.Stack;
-import javax.swing.JPanel;
-import java.util.ArrayList;
-
-public class Arbol<T extends Comparable<T>> {
-
+public class  Arbol<T extends Comparable<T>> {
+    
     private Nodo root = null;
     private int num_nodos;
     private int alt;
@@ -83,6 +83,18 @@ public class Arbol<T extends Comparable<T>> {
         }
     }
 
+    public Nodo buscar(int e, Nodo r) {
+        if (root == null) {
+            return null;
+        } else if (r.getElement().compareTo(e) == 0) {
+            return r;
+        } else if (r.getElement().compareTo(e) < 0) {
+            return buscar(e, r.getRight());
+        } else {
+            return buscar(e, r.getLeft());
+        }
+    }
+
     //Método para hallar altura desde un nodo
     private void altura(Nodo aux, int nivel) {
         if (aux != null) {
@@ -98,7 +110,7 @@ public class Arbol<T extends Comparable<T>> {
         return alt;
     }
 
-    public int getFE(Nodo x) {
+    public int obtenerFE(Nodo x) {
         if (x == null) {
             return -1;
         } else {
@@ -111,8 +123,8 @@ public class Arbol<T extends Comparable<T>> {
         Nodo aux = c.getLeft();
         c.setLeft(aux.getRight());
         aux.setRight(c);
-        c.setFe(Math.max(getFE(c.getLeft()), getFE(c.getRight())));
-        aux.setFe(Math.max(getFE(aux.getLeft()), getFE(aux.getRight())));
+        c.setFe((Math.max(obtenerFE(c.getLeft()), obtenerFE(c.getRight())) + 1));
+        aux.setFe((Math.max(obtenerFE(aux.getLeft()), obtenerFE(aux.getRight())) + 1));
         return aux;
     }
 
@@ -121,8 +133,8 @@ public class Arbol<T extends Comparable<T>> {
         Nodo aux = c.getRight();
         c.setRight(aux.getLeft());
         aux.setLeft(c);
-        c.setFe(Math.max(getFE(c.getLeft()), getFE(c.getRight())));
-        aux.setFe(Math.max(getFE(aux.getLeft()), getFE(aux.getRight())));
+        c.setFe((Math.max(obtenerFE(c.getLeft()), obtenerFE(c.getRight())) + 1));
+        aux.setFe((Math.max(obtenerFE(aux.getLeft()), obtenerFE(aux.getRight())) + 1));
         return aux;
     }
 
@@ -142,7 +154,7 @@ public class Arbol<T extends Comparable<T>> {
         return temp;
     }
 
-    //Metodo para insertar AVL
+    //Metodo para insertar al AVL
     public Nodo insertarAVL(Nodo nuevo, Nodo subAr) {
         Nodo nuevoPadre = subAr;
         if (nuevo.getElement().compareTo(subAr.getElement()) < 0) {
@@ -150,7 +162,7 @@ public class Arbol<T extends Comparable<T>> {
                 subAr.setLeft(nuevo);
             } else {
                 subAr.setLeft(insertarAVL(nuevo, subAr.getLeft()));
-                if (getFE(subAr.getLeft()) - getFE(subAr.getRight()) == 2) {
+                if ((obtenerFE(subAr.getLeft()) - obtenerFE(subAr.getRight()) == 2)) {
                     if (nuevo.getElement().compareTo(subAr.getLeft().getElement()) < 0) {
                         nuevoPadre = rotacionIzquierda(subAr);
                     } else {
@@ -164,11 +176,11 @@ public class Arbol<T extends Comparable<T>> {
                 subAr.setRight(nuevo);
             } else {
                 subAr.setRight(insertarAVL(nuevo, subAr.getRight()));
-                if (getFE(subAr.getRight()) - getFE(subAr.getLeft()) == 2) {
+                if ((obtenerFE(subAr.getRight()) - obtenerFE(subAr.getLeft()) == 2)) {
                     if (nuevo.getElement().compareTo(subAr.getRight().getElement()) > 0) {
                         nuevoPadre = rotacionDerecha(subAr);
                     } else {
-                        nuevoPadre = rotacionDobleDerecha(subAr);
+                        nuevoPadre = rotacionDobleDerecha(root);
                     }
 
                 }
@@ -177,12 +189,12 @@ public class Arbol<T extends Comparable<T>> {
             System.out.println("Nodo duplicado");
         }
         //Actualizamos la altura
-        if (subAr.getLeft() == null && subAr.getRight() != null) {
-            subAr.setFe(subAr.getRight().getFe() + 1);
-        } else if (subAr.getRight() == null && subAr.getLeft() != null) {
-            subAr.setFe(subAr.getLeft().getFe() + 1);
+        if ((subAr.getLeft() == null) && (subAr.getRight() != null)) {
+            subAr.setFe((subAr.getRight().getFe() + 1));
+        } else if ((subAr.getRight() == null) && (subAr.getLeft() != null)) {
+            subAr.setFe((subAr.getLeft().getFe() + 1));
         } else {
-            subAr.setFe(Math.max(getFE(subAr.getLeft()), getFE(subAr.getRight())) + 1);
+            subAr.setFe((Math.max(obtenerFE(subAr.getLeft()), obtenerFE(subAr.getRight())) + 1));
         }
         return nuevoPadre;
     }
@@ -194,17 +206,17 @@ public class Arbol<T extends Comparable<T>> {
             root = nuevo;
         } else {
             root = insertarAVL(nuevo, root);
-        }     
+        }
     }
 
     public String obtenerCodigoGraphviz() {
         String texto = "digraph G\n"
                 + "{\n"
-                + "      node[shape = circle]\n"
-                + "      node[style = filled]\n"
-                + "      node[fillcolor = \"# FFB6C1\"]\n"
-                + "      node[color = \"# FFB6C1\"]\n"
-                + "      edge[color = \"#31CEF0\"]\n";
+                + "     node[shape = circle]\n"
+                + "     node[style = filled]\n"
+                + "     node[fillcolor = \"#FFB6C1\"]\n"
+                + "     node[color = \"#FFB6C1\"]\n"
+                + "     edge[color = \"#31CEF0\"]\n";
         if (root != null) {
             texto += root.textoGraphviz();
         }
@@ -228,18 +240,16 @@ public class Arbol<T extends Comparable<T>> {
                 pw.close();
             }
         }
-        
+
     }
 
-    
-    
     //Método para dibujar el árbol
     public void dibujarGraphiz() {
         try {
-            escribirArchivo("arbol.dot", obtenerCodigoGraphviz());
-           
-            ProcessBuilder proceso= new ProcessBuilder("dot", "-Tpng", "-o", "arbol.png", "arbol.dot");
+            escribirArchivo("archivo.dot", obtenerCodigoGraphviz());
+
             //Convertir archivo.dot a imagen
+            ProcessBuilder proceso = new ProcessBuilder("dot", "-Tpng", "-o", "arbol.png", "archivo.dot");
             proceso.redirectErrorStream(true);
             Process p = proceso.start();
             p.waitFor();

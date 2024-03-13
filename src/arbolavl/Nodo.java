@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package arbolavl;
 
 /**
  *
@@ -75,35 +74,18 @@ public class Nodo<T extends Comparable<T>> {
         this.right = right;
     }
 
-    public void insertChild(Nodo child) {
-        if (child.getElement().compareTo(element) < 0) {
-            if (left != null) {
-                left.insertChild(child);
-            } else {
-                left = child;
-            }
-        }else{
-            if(right != null){
-                right.insertChild(child);
-            }else{
-                right = child;
-            }
-        }
-    }
-
     public String textoGraphviz() {
-        if (left == null && right == null) {
-            return String.valueOf(element);
+        if (this.getLeft() == null && this.getRight() == null) {
+            return String.valueOf(this.getElement());
         } else {
             String texto = "";
-            if (left != null) {
-                texto = element + "->" + left.textoGraphviz() + "\n";
+            if (this.getLeft() != null) {
+                texto = this.getElement() + "->" + this.getLeft().textoGraphviz() + "\n";
             }
-            if (right != null) {
-                texto = element + "->" + right.textoGraphviz() + "\n";
+            if (this.getRight() != null) {
+                texto += this.getElement() + "->" + this.getRight().textoGraphviz() + "\n";
             }
-            return texto;          
+            return texto;
         }
     }
-
 }
