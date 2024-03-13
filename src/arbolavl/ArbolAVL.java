@@ -21,10 +21,6 @@ public class ArbolAVL {
         ArrayList<String> pre = new ArrayList<String>();
         ArrayList<String> in = new ArrayList<String>();
         ArrayList<String> post = new ArrayList<String>();
-        String direccionDot = "arbol.dot";
-        String direccionPng = "arbol.png";
-        String dotPath= "\"C:\\Program Files\\Graphviz\\bin\\dot.exe\"";
-
        
         arbol.insertar(8);
         arbol.insertar(13);
