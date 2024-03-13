@@ -25,6 +25,7 @@ public class ArbolAVL {
         String direccionPng = "arbol.png";
         String dotPath= "\"C:\\Program Files\\Graphviz\\bin\\dot.exe\"";
 
+       
         arbol.insertar(8);
         arbol.insertar(13);
         arbol.insertar(14);

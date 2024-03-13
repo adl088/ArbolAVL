@@ -195,6 +195,7 @@ public class Arbol<T extends Comparable<T>> {
         } else {
             root = insertarAVL(nuevo, root);
         }
+        
     }
 
     public String obtenerCodigoGraphviz() {
