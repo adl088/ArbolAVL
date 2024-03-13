@@ -102,8 +102,7 @@ public class Nodo<T extends Comparable<T>> {
             if (right != null) {
                 texto = element + "->" + right.textoGraphviz() + "\n";
             }
-            return texto;
-           
+            return texto;          
         }
     }
 
