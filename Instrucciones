@@ -1,0 +1,3 @@
+Para correr el código hay que instalar la librería de Graphviz en el equipo, en el siguiente link: https://graphviz.org/download/
+
+Y para visualizar la interfaz es necesario agregar los archivos .JAR en el paquete de flatlaf_lib a las librerias del proyecto.
