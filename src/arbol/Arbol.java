@@ -1,17 +1,21 @@
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+package arbol;
+
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Stack;
 
 /**
  *
  * @author andre
  */
-public class  Arbol<T extends Comparable<T>> {
+public class  Arbol<T extends Comparable<T>> implements Iterable<T>{
     
     private Nodo root = null;
     private int num_nodos;
@@ -248,7 +252,7 @@ public class  Arbol<T extends Comparable<T>> {
             escribirArchivo("archivo.dot", obtenerCodigoGraphviz());
             
             //Convertir archivo.dot a imagen
-            ProcessBuilder proceso = new ProcessBuilder("dot", "-Tpng", "-o", "arbol.png", "archivo.dot");
+            ProcessBuilder proceso = new ProcessBuilder("dot", "-Tpng", "-o", "src/img/arbol.png", "archivo.dot");
             proceso.redirectErrorStream(true);
             Process p = proceso.start();
             p.waitFor();
@@ -260,6 +264,43 @@ public class  Arbol<T extends Comparable<T>> {
             
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    
+    //Esto es el iterador para recorrer con un For Each
+    @Override
+    public Iterator<T> iterator() {
+        return new ArbolIterator(root);
+    }
+
+    private class ArbolIterator implements Iterator<T> {
+        private Stack<Nodo<T>> stack = new Stack<>();
+
+        public ArbolIterator(Nodo<T> node) {
+            while (node != null) {
+                stack.push(node);
+                node = node.getLeft();
+            }
+        }
+
+        @Override
+        public boolean hasNext() {
+            return !stack.isEmpty();
+        }
+
+        @Override
+        public T next() {
+            Nodo<T> node = stack.pop();
+            T result = node.getElement();
+            if (node.getRight() != null) {
+                Nodo<T> temp = node.getRight();
+                while (temp != null) {
+                    stack.push(temp);
+                    temp = temp.getLeft();
+                }
+            }
+            return result;
         }
     }
 }

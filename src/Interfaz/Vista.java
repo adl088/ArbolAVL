@@ -4,12 +4,19 @@
  */
 package Interfaz;
 
+import DataManagement.Data;
+import arbol.Arbol;
 import java.awt.Image;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
 import com.formdev.flatlaf.FlatLightLaf;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 /**
@@ -18,12 +25,16 @@ import javax.swing.*;
  */
 public class Vista extends javax.swing.JFrame {
 
+    private Path last; // este es el ultimo archivo selecionado por el usuario
+    private Arbol arbolAVL = new Arbol();
+
     /**
      * Creates new form Vista
      */
     public Vista() {
         initComponents();
         this.setLocationRelativeTo(null);
+        arbolAVL.dibujarGraphiz();
         setImageLabel(arbol, "src/img/arbol.png");
     }
 
@@ -168,6 +179,28 @@ public class Vista extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+
+        // Creación del JFileChooser
+        javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+
+// Establece el directorio inicial en el directorio del proyecto
+        String currentDirectory = System.getProperty("user.dir");
+        fileChooser.setCurrentDirectory(new File(currentDirectory));
+
+        int result = fileChooser.showOpenDialog(null);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            try {
+                // Obtiene el archivo seleccionado
+                last = fileChooser.getSelectedFile().toPath();
+                addToArbol();
+                arbolAVL.dibujarGraphiz();
+                updateArbol();
+            } catch (IOException ex) {
+                System.out.println("Hubo error al añadir el arbol");
+                Logger.getLogger(Vista.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -186,13 +219,31 @@ public class Vista extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    private void updateArbol() {
+        setImageLabel(arbol, "src/img/arbol.png");
+        arbol.revalidate();
+        arbol.repaint();
+    }
+
+    private void addToArbol() throws IOException {
+        Data add = new Data(last);
+        arbolAVL.insertar(add);
+    }
+
+    private void setImageLabel(JLabel name, String root) {
+        ImageIcon img = new ImageIcon(root);
+        Icon icon = new ImageIcon(img.getImage().getScaledInstance(name.getWidth(), name.getHeight(), Image.SCALE_DEFAULT));
+        name.setIcon(icon);
+        this.repaint();
+    }
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
         try {
             UIManager.setLookAndFeel(new FlatLightLaf());
-        } catch (Exception ex) {
+        } catch (UnsupportedLookAndFeelException ex) {
             System.err.println("Failed to initialize LaF");
         }
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -202,12 +253,6 @@ public class Vista extends javax.swing.JFrame {
         });
     }
 
-    private void setImageLabel(JLabel name, String root) {
-        ImageIcon img = new ImageIcon(root);
-        Icon icon = new ImageIcon(img.getImage().getScaledInstance(name.getWidth(), name.getHeight(), Image.SCALE_DEFAULT));
-        name.setIcon(icon);
-        this.repaint();
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel arbol;
