@@ -4,7 +4,7 @@ digraph G
      node[style = filled]
      node[fillcolor = "#FFB6C1"]
      node[color = "#FFB6C1"]
-     edge[color = "#31CEF0"]
+     edge[color = "#000000"]
 21->8->3->1
 3->5
 

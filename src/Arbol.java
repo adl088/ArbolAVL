@@ -1,4 +1,3 @@
-
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ public class  Arbol<T extends Comparable<T>> {
     private Nodo root = null;
     private int num_nodos;
     private int alt;
-
+    
     public Arbol() {
         root = null;
     }
@@ -216,7 +215,7 @@ public class  Arbol<T extends Comparable<T>> {
                 + "     node[style = filled]\n"
                 + "     node[fillcolor = \"#FFB6C1\"]\n"
                 + "     node[color = \"#FFB6C1\"]\n"
-                + "     edge[color = \"#31CEF0\"]\n";
+                + "     edge[color = \"#000000\"]\n";
         if (root != null) {
             texto += root.textoGraphviz();
         }
@@ -247,7 +246,7 @@ public class  Arbol<T extends Comparable<T>> {
     public void dibujarGraphiz() {
         try {
             escribirArchivo("archivo.dot", obtenerCodigoGraphviz());
-
+            
             //Convertir archivo.dot a imagen
             ProcessBuilder proceso = new ProcessBuilder("dot", "-Tpng", "-o", "arbol.png", "archivo.dot");
             proceso.redirectErrorStream(true);
@@ -258,6 +257,7 @@ public class  Arbol<T extends Comparable<T>> {
             } else {
                 System.out.println("La conversión se ha completado exitosamente.");
             }
+            
         } catch (Exception e) {
             e.printStackTrace();
         }

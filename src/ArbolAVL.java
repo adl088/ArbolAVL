@@ -1,5 +1,7 @@
 
 import java.util.ArrayList;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -33,6 +35,7 @@ public class ArbolAVL {
         arbol.insertar(27);
         arbol.insertar(28);
         arbol.insertar(29);
+        arbol.insertar(8);
         
         
 
@@ -49,6 +52,7 @@ public class ArbolAVL {
         System.out.println(post);
 
         arbol.dibujarGraphiz();
+        
         
     }
 
