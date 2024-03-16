@@ -5,22 +5,24 @@
  */
 package arbol;
 
+import DataManagement.Data;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Stack;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author andre
  */
-public class  Arbol<T extends Comparable<T>> implements Iterable<T>{
-    
+public class Arbol<T extends Comparable<T>> implements Iterable<T> {
+
     private Nodo root = null;
     private int num_nodos;
     private int alt;
-    
+
     public Arbol() {
         root = null;
     }
@@ -86,16 +88,12 @@ public class  Arbol<T extends Comparable<T>> implements Iterable<T>{
         }
     }
 
-    public Nodo buscar(int e, Nodo r) {
-        if (root == null) {
-            return null;
-        } else if (r.getElement().compareTo(e) == 0) {
-            return r;
-        } else if (r.getElement().compareTo(e) < 0) {
-            return buscar(e, r.getRight());
-        } else {
-            return buscar(e, r.getLeft());
+    //Método para hallar la altura de un nodo
+    int altura(Nodo nodo) {
+        if (nodo == null) {
+            return 0;
         }
+        return nodo.getAlt();
     }
 
     //Método para hallar altura desde un nodo
@@ -212,6 +210,24 @@ public class  Arbol<T extends Comparable<T>> implements Iterable<T>{
         }
     }
 
+
+    public Nodo buscar(String e, Nodo r) {
+        if (root == null) {
+            return null;
+        } else if (r.getElement().toString().compareTo(e) == 0) {
+            return r;
+        } else if (r.getElement().toString().compareTo(e) < 0) {
+            return buscar(e, r.getRight());
+        } else {
+            return buscar(e, r.getLeft());
+        }
+    }
+
+    // Función para obtener el máximo de dos enteros
+    int max(int a, int b) {
+        return (a > b) ? a : b;
+    }
+
     public String obtenerCodigoGraphviz() {
         String texto = "digraph G\n"
                 + "{\n"
@@ -250,7 +266,7 @@ public class  Arbol<T extends Comparable<T>> implements Iterable<T>{
     public void dibujarGraphiz() {
         try {
             escribirArchivo("archivo.dot", obtenerCodigoGraphviz());
-            
+
             //Convertir archivo.dot a imagen
             ProcessBuilder proceso = new ProcessBuilder("dot", "-Tpng", "-o", "src/img/arbol.png", "archivo.dot");
             proceso.redirectErrorStream(true);
@@ -261,13 +277,12 @@ public class  Arbol<T extends Comparable<T>> implements Iterable<T>{
             } else {
                 System.out.println("La conversión se ha completado exitosamente.");
             }
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    
     //Esto es el iterador para recorrer con un For Each
     @Override
     public Iterator<T> iterator() {
@@ -275,6 +290,7 @@ public class  Arbol<T extends Comparable<T>> implements Iterable<T>{
     }
 
     private class ArbolIterator implements Iterator<T> {
+
         private Stack<Nodo<T>> stack = new Stack<>();
 
         public ArbolIterator(Nodo<T> node) {

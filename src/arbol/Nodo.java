@@ -1,6 +1,3 @@
-
-
-
 package arbol;
 /**s
  *
@@ -15,12 +12,23 @@ public class Nodo<T extends Comparable<T>> {
     private Nodo parent;
     private Nodo left;
     private Nodo right;
+    private int alt;
+
+    public int getAlt() {
+        return alt;
+    }
+
+    public void setAlt(int alt) {
+        this.alt = alt;
+    }
+    
 
     public Nodo(T element) {
         this.element = element;
         this.fe = 0;
         this.left = null;
         this.right = null;
+        alt = 1;
     }
 
     public void setFe(int fe) {

@@ -39,6 +39,10 @@ public class ArbolAVL {
         arbol.insertar(29);
         arbol.insertar(8);
         
+        for (var a: arbol) {
+            System.out.println(a);
+        }
+        
         
 
         System.out.println("Preorden:");

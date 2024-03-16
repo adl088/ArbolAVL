@@ -13,7 +13,7 @@ import java.nio.file.Path;
  * @author bazas
  */
 public class Data implements Comparable<Data> {
-    
+
     private String name;
     private String categoria;
     private Path path; // Ruta de acceso al archivo
@@ -28,8 +28,6 @@ public class Data implements Comparable<Data> {
         }
     }
 
-    
-    
     public String getName() {
         return name;
     }
@@ -55,19 +53,32 @@ public class Data implements Comparable<Data> {
     }
 
     public static String getFileName(Path path) {
-        String fileName = path.getFileName().toString();
-        int dotIndex = fileName.indexOf('.'); // Cambio aquí para buscar el primer punto
-        if (dotIndex > 0) { // Asegura que hay un punto y no está al inicio
+        String fileName = path.getFileName().toString(); // Obtiene el nombre del archivo como una cadena
+        int dotIndex = fileName.indexOf('.'); // Encuentra el índice del primer punto en el nombre del archivo
+        int dashIndex = fileName.indexOf('-'); // Encuentra el índice del primer guion en el nombre del archivo
+
+        // Verifica si hay un guion en el nombre del archivo y que no esté al principio
+        if (dashIndex > 0) {
+            // Si hay un guion y una extensión, devuelve el nombre del archivo sin la extensión y el guion
+            if (dotIndex > 0) {
+                return fileName.substring(0, Math.min(dotIndex, dashIndex));
+            }
+            // Si hay un guion pero no hay una extensión, devuelve el nombre del archivo sin el guion
+            return fileName.substring(0, dashIndex);
+        }
+        // Si no hay guion, devuelve el nombre del archivo sin la extensión
+        if (dotIndex > 0) {
             return fileName.substring(0, dotIndex);
         }
-        return fileName; // Devuelve el nombre completo si no tiene extensión
+        // Si no hay guion ni extensión, devuelve el nombre completo del archivo
+        return fileName;
     }
-    
+
     @Override
     public String toString() {
         return name;
     }
-    
+
     public static String findCategory(Path filePath) {
         // Obtiene el nombre de la carpeta padre
         Path parentFolder = filePath.getParent();
@@ -76,7 +87,7 @@ public class Data implements Comparable<Data> {
 
             // Compara el nombre de la carpeta con las categorías conocidas
             switch (folderName) {
-                case "biske":
+                case "bike":
                     return "Bike";
                 case "cars":
                     return "Cars";

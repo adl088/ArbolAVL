@@ -15,6 +15,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -28,14 +29,17 @@ public class Vista extends javax.swing.JFrame {
     private Path last; // este es el ultimo archivo selecionado por el usuario
     private Arbol arbolAVL = new Arbol();
 
+    ArrayList<String> pre = new ArrayList<String>();
+    ArrayList<String> in = new ArrayList<String>();
+    ArrayList<String> post = new ArrayList<String>();
+
     /**
      * Creates new form Vista
      */
     public Vista() {
         initComponents();
         this.setLocationRelativeTo(null);
-        arbolAVL.dibujarGraphiz();
-        setImageLabel(arbol, "src/img/arbol.png");
+        setImage(arbol, "src/img/arbol.png");
     }
 
     /**
@@ -48,20 +52,21 @@ public class Vista extends javax.swing.JFrame {
     private void initComponents() {
 
         fondoPanel = new javax.swing.JPanel();
-        jButton5 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        buscarB1 = new javax.swing.JButton();
+        buscarB = new javax.swing.JButton();
+        postOrden = new javax.swing.JButton();
+        preOrden = new javax.swing.JButton();
+        inOrden = new javax.swing.JButton();
+        insertarB = new javax.swing.JButton();
+        EliminarB = new javax.swing.JButton();
         arbol = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        vista = new javax.swing.JScrollPane();
-        jLabel2 = new javax.swing.JLabel();
+        recorridos = new javax.swing.JTextArea();
+        backVista = new javax.swing.JLabel();
+        backVista1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        stars1 = new javax.swing.JLabel();
+        stars = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         fondo = new javax.swing.JLabel();
 
@@ -72,87 +77,105 @@ public class Vista extends javax.swing.JFrame {
         fondoPanel.setMaximumSize(new java.awt.Dimension(2147483647, 590));
         fondoPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jButton5.setText("PostOrden");
-        jButton5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0)));
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        buscarB1.setText("Recorrido Por Niveles");
+        buscarB1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0)));
+        buscarB1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                buscarB1ActionPerformed(evt);
             }
         });
-        fondoPanel.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 290, 140, 50));
+        fondoPanel.add(buscarB1, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 310, 140, 50));
 
-        jButton4.setText("PreOrden");
-        jButton4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0)));
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        buscarB.setText("Buscar");
+        buscarB.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0)));
+        buscarB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                buscarBActionPerformed(evt);
             }
         });
-        fondoPanel.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 290, 140, 50));
+        fondoPanel.add(buscarB, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 170, 140, 50));
 
-        jButton3.setText("InOrden");
-        jButton3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0)));
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        postOrden.setText("PostOrden");
+        postOrden.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0)));
+        postOrden.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                postOrdenActionPerformed(evt);
             }
         });
-        fondoPanel.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 290, 140, 50));
+        fondoPanel.add(postOrden, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 390, 140, 50));
 
-        jButton1.setText("Insertar");
-        jButton1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0)));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        preOrden.setText("PreOrden");
+        preOrden.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0)));
+        preOrden.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                preOrdenActionPerformed(evt);
             }
         });
-        fondoPanel.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 100, 140, 50));
+        fondoPanel.add(preOrden, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 390, 140, 50));
 
-        jButton2.setText("Eliminar");
-        jButton2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0)));
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        inOrden.setText("InOrden");
+        inOrden.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0)));
+        inOrden.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                inOrdenActionPerformed(evt);
             }
         });
-        fondoPanel.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 190, 140, 50));
+        fondoPanel.add(inOrden, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 390, 140, 50));
+
+        insertarB.setText("Insertar");
+        insertarB.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0)));
+        insertarB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                insertarBActionPerformed(evt);
+            }
+        });
+        fondoPanel.add(insertarB, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 90, 140, 50));
+
+        EliminarB.setText("Eliminar");
+        EliminarB.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0)));
+        EliminarB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EliminarBActionPerformed(evt);
+            }
+        });
+        fondoPanel.add(EliminarB, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 90, 140, 50));
 
         arbol.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         arbol.setText("arbol");
         arbol.setPreferredSize(new java.awt.Dimension(550, 350));
         fondoPanel.add(arbol, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 130, 440, 370));
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jTextArea1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0)));
-        jScrollPane2.setViewportView(jTextArea1);
+        recorridos.setColumns(20);
+        recorridos.setFont(new java.awt.Font("Roboto", 0, 24)); // NOI18N
+        recorridos.setRows(5);
+        recorridos.setText("\n");
+        recorridos.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0)));
+        jScrollPane2.setViewportView(recorridos);
 
-        fondoPanel.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 350, 450, 200));
+        fondoPanel.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 450, 450, 100));
 
-        jTextField2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0)));
-        fondoPanel.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 190, 280, 50));
+        backVista.setBackground(new java.awt.Color(255, 255, 255));
+        backVista.setForeground(new java.awt.Color(255, 255, 255));
+        backVista.setText("jLabel4");
+        backVista.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "VISTA PREVIA", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 24))); // NOI18N
+        backVista.setOpaque(true);
+        fondoPanel.add(backVista, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 90, 490, 460));
 
-        jTextField1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0)));
-        fondoPanel.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 100, 280, 50));
-
-        jLabel4.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("jLabel4");
-        jLabel4.setOpaque(true);
-        fondoPanel.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 520, 460));
-
-        vista.setBackground(new java.awt.Color(255, 255, 255));
-        vista.setBorder(null);
-        vista.setForeground(new java.awt.Color(255, 255, 255));
-        fondoPanel.add(vista, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 520, 460));
-
-        jLabel2.setFont(new java.awt.Font("Trebuchet MS", 0, 48)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Vista Previa");
-        fondoPanel.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 520, -1));
+        backVista1.setBackground(new java.awt.Color(255, 255, 255));
+        backVista1.setForeground(new java.awt.Color(255, 255, 255));
+        backVista1.setText("jLabel4");
+        backVista1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
+        backVista1.setOpaque(true);
+        fondoPanel.add(backVista1, new org.netbeans.lib.awtextra.AbsoluteConstraints(35, 85, 500, 470));
 
         jLabel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        fondoPanel.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 1025, 570));
+        fondoPanel.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 10, 1020, 570));
+
+        stars1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/stars.gif"))); // NOI18N
+        fondoPanel.add(stars1, new org.netbeans.lib.awtextra.AbsoluteConstraints(537, 0, 510, 290));
+
+        stars.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/stars.gif"))); // NOI18N
+        fondoPanel.add(stars, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/p.png"))); // NOI18N
         fondoPanel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -177,13 +200,12 @@ public class Vista extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-
+    private void insertarBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertarBActionPerformed
+        arbolAVL.dibujarGraphiz();
         // Creación del JFileChooser
         javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
 
-// Establece el directorio inicial en el directorio del proyecto
+        // Establece el directorio inicial en el directorio del proyecto
         String currentDirectory = System.getProperty("user.dir");
         fileChooser.setCurrentDirectory(new File(currentDirectory));
 
@@ -201,40 +223,76 @@ public class Vista extends javax.swing.JFrame {
                 Logger.getLogger(Vista.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_insertarBActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void EliminarBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarBActionPerformed
+        
+        String name = (String) JOptionPane.showInputDialog(null, "Ingrese nodo a eliminar", "ELIMINAR NODO", JOptionPane.INFORMATION_MESSAGE, null, null, "");
+        
+       
+    }//GEN-LAST:event_EliminarBActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void inOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inOrdenActionPerformed
+        recorridos.setText("");
+        in.clear();
+        arbolAVL.inordenRE(arbolAVL.getRoot(), in);
+        recorridos.append("InOrden: ");
+        recorridos.append("");
+        recorridos.append(in.toString());
+    }//GEN-LAST:event_inOrdenActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void preOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preOrdenActionPerformed
+        recorridos.setText("");
+        pre.clear();
+        arbolAVL.preordenRE(arbolAVL.getRoot(), pre);
+        recorridos.append("PreOrden: ");
+        recorridos.append("");
+        recorridos.append(pre.toString());
+    }//GEN-LAST:event_preOrdenActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
+    private void postOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_postOrdenActionPerformed
+        recorridos.setText("");
+        post.clear();
+        arbolAVL.preordenRE(arbolAVL.getRoot(), post);
+        recorridos.append("PostOrden: ");
+        recorridos.append("");
+        recorridos.append(post.toString());
+    }//GEN-LAST:event_postOrdenActionPerformed
 
+    private void buscarBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarBActionPerformed
+
+        String name = (String) JOptionPane.showInputDialog(null, "Ingrese nodo a buscar", "BUSCAR NODO", JOptionPane.INFORMATION_MESSAGE, null, null, "");
+
+        if (arbolAVL.buscar(name, arbolAVL.getRoot()) != null) {
+            JOptionPane.showMessageDialog(null, "Nodo encontrado");
+        } else {
+            JOptionPane.showMessageDialog(null, "Nodo no encontrado");
+        }
+    }//GEN-LAST:event_buscarBActionPerformed
+
+    private void buscarB1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarB1ActionPerformed
+     
+    }//GEN-LAST:event_buscarB1ActionPerformed
+
+    //Actualiza la imagen del árbol
     private void updateArbol() {
-        setImageLabel(arbol, "src/img/arbol.png");
+        setImage(arbol, "src/img/arbol.png");
         arbol.revalidate();
         arbol.repaint();
     }
 
+    //Añade el nuevo nodo al árbol
     private void addToArbol() throws IOException {
         Data add = new Data(last);
         arbolAVL.insertar(add);
     }
 
-    private void setImageLabel(JLabel name, String root) {
-        ImageIcon img = new ImageIcon(root);
-        Icon icon = new ImageIcon(img.getImage().getScaledInstance(name.getWidth(), name.getHeight(), Image.SCALE_DEFAULT));
-        name.setIcon(icon);
-        this.repaint();
+    //Muestra la imagen del árbol
+    private void setImage(JLabel name, String root) {
+        name.setText("");
+        Image img = new ImageIcon(root).getImage();
+        ImageIcon img2 = new ImageIcon(img.getScaledInstance(200, 300, Image.SCALE_SMOOTH));
+        name.setIcon(img2);
     }
 
     /**
@@ -255,22 +313,23 @@ public class Vista extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton EliminarB;
     private javax.swing.JLabel arbol;
+    private javax.swing.JLabel backVista;
+    private javax.swing.JLabel backVista1;
+    private javax.swing.JButton buscarB;
+    private javax.swing.JButton buscarB1;
     private javax.swing.JLabel fondo;
     private javax.swing.JPanel fondoPanel;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton inOrden;
+    private javax.swing.JButton insertarB;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JScrollPane vista;
+    private javax.swing.JButton postOrden;
+    private javax.swing.JButton preOrden;
+    private javax.swing.JTextArea recorridos;
+    private javax.swing.JLabel stars;
+    private javax.swing.JLabel stars1;
     // End of variables declaration//GEN-END:variables
 }
