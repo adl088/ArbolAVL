@@ -23,6 +23,7 @@ public class ArbolAVL {
         ArrayList<String> pre = new ArrayList<String>();
         ArrayList<String> in = new ArrayList<String>();
         ArrayList<String> post = new ArrayList<String>();
+        ArrayList<String> niv = new ArrayList<String>();
 
         arbol.insertar(3);
         arbol.insertar(8);
@@ -37,12 +38,16 @@ public class ArbolAVL {
         arbol.insertar(27);
         arbol.insertar(28);
         arbol.insertar(29);
-        arbol.insertar(8);
+        arbol.eliminar(8);
+        arbol.eliminar(3);
+        arbol.eliminar(25);
+        arbol.eliminar(5);
         
-        for (var a: arbol) {
-            System.out.println(a);
-        }
-        
+//        
+//        for (var a: arbol) {
+//            System.out.println(a);
+//        }
+//        
         
 
         System.out.println("Preorden:");
@@ -56,6 +61,9 @@ public class ArbolAVL {
         System.out.println("Postorden:");
         arbol.postordenRE(arbol.getRoot(), post);
         System.out.println(post);
+        
+        System.out.println("Recorrido por niveles: ");
+        arbol.recorridoPorNivelesRE(arbol.getRoot(), niv);
 
         arbol.dibujarGraphiz();
         

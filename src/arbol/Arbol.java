@@ -11,6 +11,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Stack;
+import java.util.Queue;
+import java.util.LinkedList;
 import javax.swing.JOptionPane;
 
 /**
@@ -88,6 +90,30 @@ public class Arbol<T extends Comparable<T>> implements Iterable<T> {
         }
     }
 
+    //Recorrido por nieveles Recursivo
+    public void recorridoPorNivelesRE(Nodo raiz, ArrayList<String> niv) {
+        if (raiz == null) {
+            return;
+        }
+
+        Queue<Nodo> cola = new LinkedList<>();
+        cola.add(raiz);
+
+        while (!cola.isEmpty()) {
+            Nodo actual = cola.poll();
+            System.out.print(actual.getElement() + " ");
+            niv.add(actual.getElement().toString());
+
+            if (actual.getLeft() != null) {
+                cola.add(actual.getLeft());
+            }
+
+            if (actual.getRight() != null) {
+                cola.add(actual.getRight());
+            }
+        }
+    }
+
     //Método para hallar la altura de un nodo
     int altura(Nodo nodo) {
         if (nodo == null) {
@@ -111,6 +137,7 @@ public class Arbol<T extends Comparable<T>> implements Iterable<T> {
         return alt;
     }
 
+    //Retorna el Factor de equilibrio del Nodo
     public int obtenerFE(Nodo x) {
         if (x == null) {
             return -1;
@@ -188,6 +215,7 @@ public class Arbol<T extends Comparable<T>> implements Iterable<T> {
             }
         } else {
             System.out.println("Nodo duplicado");
+            JOptionPane.showMessageDialog(null, "Nodo duplicado");
         }
         //Actualizamos la altura
         if ((subAr.getLeft() == null) && (subAr.getRight() != null)) {
@@ -210,22 +238,203 @@ public class Arbol<T extends Comparable<T>> implements Iterable<T> {
         }
     }
 
+    //Halla el predecesor
+    public Nodo pred(Nodo r) {
+        Nodo p = r.getLeft();
+        p.setParent(r);
 
-    public Nodo buscar(String e, Nodo r) {
+        while (p.getRight() != null) {
+            p.setParent(r);
+            p = p.getRight();
+        }
+        return p;
+    }
+
+    //Elimina el nodo y balancea el árbol 
+    public Nodo eliminarAVL(T elemento, Nodo subAr) {
+        if (subAr == null) {
+            return subAr;
+        }
+        Nodo aux = new Nodo(elemento);
+
+        // Realizar la eliminación similar a un árbol binario de búsqueda
+        if (aux.getElement().compareTo(subAr.getElement()) < 0) {
+            subAr.setLeft(eliminarAVL(elemento, subAr.getLeft()));
+        } else if (aux.getElement().compareTo(subAr.getElement()) > 0) {
+            subAr.setRight(eliminarAVL(elemento, subAr.getRight()));
+        } else { // Elemento encontrado, realizar la eliminación
+            // Caso 1: Nodo a eliminar tiene 0 o 1 hijo
+            if (subAr.getLeft() == null || subAr.getRight() == null) {
+                Nodo temp = null;
+                if (temp == subAr.getLeft()) {
+                    temp = subAr.getRight();
+                } else {
+                    temp = subAr.getLeft();
+                }
+
+                // Si no hay hijos
+                if (temp == null) {
+                    temp = subAr;
+                    subAr = null;
+                } else { // Caso 1 hijo
+                    subAr = temp;
+                }
+            } else { // Caso 2: Nodo a eliminar tiene 2 hijos
+                // Encontrar el sucesor inmediato en el subárbol derecho
+                Nodo temp = encontrarMinimo(subAr.getRight());
+
+                // Copiar el contenido del sucesor inmediato al nodo actual
+                subAr.setElement(temp.getElement());
+
+                // Eliminar el sucesor inmediato
+                subAr.setRight(eliminarAVL((T) temp.getElement(), subAr.getRight()));
+            }
+        }
+
+        // Si el árbol quedó vacío después de la eliminación
+        if (subAr == null) {
+            return subAr;
+        }
+
+        // Actualizar la altura (factor de equilibrio) del nodo actual
+        subAr.setFe(Math.max(obtenerFE(subAr.getLeft()), obtenerFE(subAr.getRight())) + 1);
+
+        // Rebalancear el árbol
+        int balance = obtenerBalance(subAr);
+        if (balance > 1 && obtenerBalance(subAr.getLeft()) >= 0) {
+            return rotacionDerecha(subAr);
+        }
+        if (balance > 1 && obtenerBalance(subAr.getLeft()) < 0) {
+            subAr.setLeft(rotacionIzquierda(subAr.getLeft()));
+            return rotacionDerecha(subAr);
+        }
+        if (balance < -1 && obtenerBalance(subAr.getRight()) <= 0) {
+            return rotacionIzquierda(subAr);
+        }
+        if (balance < -1 && obtenerBalance(subAr.getRight()) > 0) {
+            subAr.setRight(rotacionDerecha(subAr.getRight()));
+            return rotacionIzquierda(subAr);
+        }
+
+        return subAr;
+    }
+
+    // Método para eliminar un nodo del árbol AVL
+    public void eliminar(T elemento) {
         if (root == null) {
+            return;
+        }
+        root = eliminarAVL(elemento, root);
+        System.out.println("Eliminado " + elemento);
+    }
+
+    // Función para encontrar el nodo mínimo (más a la izquierda) en un subárbol
+    private Nodo encontrarMinimo(Nodo nodo) {
+        Nodo actual = nodo;
+        while (actual.getLeft() != null) {
+            actual = actual.getLeft();
+        }
+        return actual;
+    }
+
+    //Obtiene el balance de un nodo 
+    int obtenerBalance(Nodo nodo) {
+        if (nodo == null) {
+            return 0;
+        }
+        return altura(nodo.getLeft()) - altura(nodo.getRight());
+    }
+
+    //Función para buscar nodo
+    public Nodo buscar(Nodo r, String element) {
+        if (this.root == null) {
             return null;
-        } else if (r.getElement().toString().compareTo(e) == 0) {
+        } else if (r.getElement().toString().compareTo(element) == 0) {
             return r;
-        } else if (r.getElement().toString().compareTo(e) < 0) {
-            return buscar(e, r.getRight());
+        } else if (r.getElement().toString().compareTo(element) < 0) {
+            return buscar(r.getRight(), element);
         } else {
-            return buscar(e, r.getLeft());
+            return buscar(r.getLeft(), element);
         }
     }
 
     // Función para obtener el máximo de dos enteros
     int max(int a, int b) {
         return (a > b) ? a : b;
+    }
+
+    //Función para obtener el nivel del nodo
+    public int obtenerNivel(Nodo r, T elemento, int nivel) {
+        Nodo aux = new Nodo(elemento);
+
+        //Si no se encuentra el nodo
+        if (r == null) {
+            return -1;
+        }
+
+        if (r.getElement().compareTo(aux.getElement()) == 0) {
+            return nivel; //Retorna el nivel actual si se encuentra el nodo
+        }
+
+        //Se obtienen los niveles de los nodos a la izquierda y derecha
+        int nivelIzquierdo = obtenerNivel(r.getLeft(), elemento, nivel + 1);
+        int nivelDerecho = obtenerNivel(r.getRight(), elemento, nivel + 1);
+
+        //Retorna el nivel donde se encontró del nodo
+        return Math.max(nivelIzquierdo, nivelDerecho);
+    }
+
+    //Función para obtener el padre del nodo
+    public Nodo obtenerPadre(Nodo r, T elemento) {
+        Nodo aux = new Nodo(elemento);
+        if ((r == null) || (r.getElement().compareTo(aux.getElement()) == 0)) {
+            return null; // si la raiz es nula o el elemento que buscamos
+        }
+
+        if ((r.getLeft() != null && r.getLeft().getElement().compareTo(aux.getElement()) == 0)
+                || (r.getRight() != null && r.getRight().getElement().compareTo(aux.getElement()) == 0)) {
+            return r; //si el padre del nodo es la raíz
+        }
+
+        //Busca el padre en los subárboles izquierdo y derecho
+        Nodo padreIzquierdo = obtenerPadre(r.getLeft(), elemento);
+        Nodo padreDerecho = obtenerPadre(r.getRight(), elemento);
+
+        //Retorna el padre encontrado en alguno de los dos subárboles
+        return (padreIzquierdo != null) ? padreIzquierdo : padreDerecho;
+    }
+
+    
+    //Función para obtener el abuelo del nodo
+    public Nodo obtenerTio(Nodo r, T elemento) {
+        //Enocntramos el padre del nodo primero
+        Nodo padre = obtenerPadre(r, elemento);
+
+        //Si no se encuentra el padre o es la raíz entonces no hay tío
+        if (padre == null || padre == r) {
+            return null;
+        }
+
+        //Para encontrar el hermano del padre
+        if (padre.getElement().compareTo(r.getElement()) < 0) { //Si el padre es menor que la raíz
+            return padre.getRight();
+        } else {
+            return padre.getLeft(); //Si el padre es mayor
+        }
+    }
+    
+    //Función para obtener al abuelo del nodo
+    public Nodo obtenerAbuelo(Nodo r, T elemento){
+        //Encontramos el padre del nodo
+        Nodo padre = obtenerPadre(r, elemento);
+        
+        //Si no se encuentra el padre o es la raíz entonces no hay abuelo
+        if (padre == null || padre == r) {
+            return null;
+        }
+        
+        //Encontrar al abuelo (padre del padre)
+        return obtenerPadre(r, (T) padre.getElement());
     }
 
     public String obtenerCodigoGraphviz() {
@@ -283,7 +492,7 @@ public class Arbol<T extends Comparable<T>> implements Iterable<T> {
         }
     }
 
-    //Esto es el iterador para recorrer con un For Each
+    //Esto es el iterador para recorrer el árbol con un For Each
     @Override
     public Iterator<T> iterator() {
         return new ArbolIterator(root);
