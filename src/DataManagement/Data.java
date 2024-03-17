@@ -52,6 +52,7 @@ public class Data implements Comparable<Data> {
         this.size = size;
     }
 
+    //Fundión oara obtener el nombre del archivo
     public static String getFileName(Path path) {
         String fileName = path.getFileName().toString(); // Obtiene el nombre del archivo como una cadena
         int dotIndex = fileName.lastIndexOf('.'); // Encuentra el índice del último punto en el nombre del archivo
@@ -78,6 +79,7 @@ public class Data implements Comparable<Data> {
         return name;
     }
 
+    //Función para hallar la categoría del archivo
     public static String findCategory(Path filePath) {
         // Obtiene el nombre de la carpeta padre
         Path parentFolder = filePath.getParent();
