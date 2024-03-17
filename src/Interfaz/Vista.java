@@ -6,6 +6,7 @@ package Interfaz;
 
 import DataManagement.Data;
 import arbol.Arbol;
+import arbol.Nodo;
 import java.awt.Image;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -224,7 +225,6 @@ public class Vista extends javax.swing.JFrame {
                 // Obtiene el archivo seleccionado
                 last = fileChooser.getSelectedFile().toPath();
                 addToArbol();
-                arbolAVL.dibujarGraphiz();
                 updateArbol();
             } catch (IOException ex) {
                 System.out.println("Hubo error al añadir el arbol");
@@ -236,8 +236,15 @@ public class Vista extends javax.swing.JFrame {
     private void EliminarBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarBActionPerformed
 
         String name = (String) JOptionPane.showInputDialog(null, "Ingrese nodo a eliminar", "ELIMINAR NODO", JOptionPane.INFORMATION_MESSAGE, null, null, "");
-
-
+        
+        for (var a : arbolAVL) {
+            Data aa = (Data) a;
+            if (aa.toString().equals(name)) {
+                arbolAVL.eliminar(aa);
+                break;
+            }
+        }
+        updateArbol();
     }//GEN-LAST:event_EliminarBActionPerformed
 
     private void inOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inOrdenActionPerformed
@@ -307,6 +314,7 @@ public class Vista extends javax.swing.JFrame {
 
     //Actualiza la imagen del árbol
     private void updateArbol() {
+        arbolAVL.dibujarGraphiz();
         setImage(arbol, "src/img/arbol.png");
         arbol.revalidate();
         arbol.repaint();

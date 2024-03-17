@@ -258,7 +258,7 @@ public class Arbol<T extends Comparable<T>> implements Iterable<T> {
         Nodo aux = new Nodo(elemento);
 
         // Realizar la eliminación similar a un árbol binario de búsqueda
-        if (aux.getElement().compareTo(subAr.getElement()) < 0) {
+        if (aux.getElement().compareTo(subAr.getElement()) < 0){
             subAr.setLeft(eliminarAVL(elemento, subAr.getLeft()));
         } else if (aux.getElement().compareTo(subAr.getElement()) > 0) {
             subAr.setRight(eliminarAVL(elemento, subAr.getRight()));
