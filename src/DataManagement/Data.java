@@ -32,6 +32,10 @@ public class Data implements Comparable<Data> {
         return name;
     }
 
+    public String getCategoria() {
+        return categoria;
+    }
+
     public Path getPath() {
         return path;
     }

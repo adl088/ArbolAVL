@@ -305,7 +305,12 @@ public class Vista extends javax.swing.JFrame {
     private void busquedaADActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busquedaADActionPerformed
         String type = JOptionPane.showInputDialog(null, "Ingrese una categoría: ");
 
-        String rango = JOptionPane.showInputDialog(null, "Rango de peso: ");
+        String r = JOptionPane.showInputDialog(null, "Ingrese el peso mínimo: ");
+        String r2 = JOptionPane.showInputDialog(null, "Ingrese el peso máximo: ");
+        
+        int min = Integer.parseInt(r);
+        int max = Integer.parseInt(r2);
+     
 
     }//GEN-LAST:event_busquedaADActionPerformed
 

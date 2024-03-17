@@ -417,7 +417,7 @@ public class Arbol<T extends Comparable<T>> implements Iterable<T> {
         //Primero obtenemos el abuelo y el padre del nodo
         Nodo abuelo = obtenerAbuelo(r, elemento);
         Nodo padre = obtenerPadre(r, elemento);
-        
+
         //Si no hay abuelo no hay tío
         if (abuelo == null) {
             return null;
@@ -455,8 +455,8 @@ public class Arbol<T extends Comparable<T>> implements Iterable<T> {
 
         //Encontrar al abuelo (padre del padre)
         return obtenerPadre(r, (T) padre.getElement());
-    }
-
+    }    
+    
     public String obtenerCodigoGraphviz() {
         String texto = "digraph G\n"
                 + "{\n"
