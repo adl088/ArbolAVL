@@ -6,6 +6,11 @@ package arbol;
 
 public class Nodo<T extends Comparable<T>> {
 
+    @Override
+    public String toString() {
+        return element.toString();
+    }
+
     private T element;
     
     private int fe;

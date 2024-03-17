@@ -5,8 +5,7 @@ digraph G
      node[fillcolor = "#FFB6C1"]
      node[color = "#FFB6C1"]
      edge[color = "#000000"]
-bike_024->bike_021->bike_004
-
-bike_024->bike_038
+carsgraz_016->bike_005
+carsgraz_016->dog_15
 
 }

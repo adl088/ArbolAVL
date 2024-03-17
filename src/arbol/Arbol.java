@@ -6,6 +6,7 @@
 package arbol;
 
 import DataManagement.Data;
+import static java.awt.image.ImageObserver.HEIGHT;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -13,6 +14,8 @@ import java.util.Iterator;
 import java.util.Stack;
 import java.util.Queue;
 import java.util.LinkedList;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -56,6 +59,9 @@ public class Arbol<T extends Comparable<T>> implements Iterable<T> {
     public void setAlt(int alt) {
         this.alt = alt;
     }
+
+    public Icon deleted = new ImageIcon(getClass().getResource("/img\\deleted.png"));
+    public Icon error = new ImageIcon(getClass().getResource("/img\\not_found.png"));
 
     //Inorden Recursivo
     public void inordenRE(Nodo node, ArrayList<String> in) {
@@ -215,7 +221,7 @@ public class Arbol<T extends Comparable<T>> implements Iterable<T> {
             }
         } else {
             System.out.println("Nodo duplicado");
-            JOptionPane.showMessageDialog(null, "Nodo duplicado");
+            JOptionPane.showMessageDialog(null, "Nodo duplicado", "Error", HEIGHT, error);
         }
         //Actualizamos la altura
         if ((subAr.getLeft() == null) && (subAr.getRight() != null)) {
@@ -258,7 +264,7 @@ public class Arbol<T extends Comparable<T>> implements Iterable<T> {
         Nodo aux = new Nodo(elemento);
 
         // Realizar la eliminación similar a un árbol binario de búsqueda
-        if (aux.getElement().compareTo(subAr.getElement()) < 0){
+        if (aux.getElement().compareTo(subAr.getElement()) < 0) {
             subAr.setLeft(eliminarAVL(elemento, subAr.getLeft()));
         } else if (aux.getElement().compareTo(subAr.getElement()) > 0) {
             subAr.setRight(eliminarAVL(elemento, subAr.getRight()));
@@ -326,6 +332,8 @@ public class Arbol<T extends Comparable<T>> implements Iterable<T> {
         }
         root = eliminarAVL(elemento, root);
         System.out.println("Eliminado " + elemento);
+        JOptionPane.showMessageDialog(null, "Nodo eliminado", "ELIMINAR NODO:", HEIGHT, deleted);
+
     }
 
     // Función para encontrar el nodo mínimo (más a la izquierda) en un subárbol
@@ -404,35 +412,47 @@ public class Arbol<T extends Comparable<T>> implements Iterable<T> {
         return (padreIzquierdo != null) ? padreIzquierdo : padreDerecho;
     }
 
-    
-    //Función para obtener el abuelo del nodo
+    //Función para obtener el tio del nodo
     public Nodo obtenerTio(Nodo r, T elemento) {
-        //Enocntramos el padre del nodo primero
+        //Primero obtenemos el abuelo y el padre del nodo
+        Nodo abuelo = obtenerAbuelo(r, elemento);
         Nodo padre = obtenerPadre(r, elemento);
-
-        //Si no se encuentra el padre o es la raíz entonces no hay tío
-        if (padre == null || padre == r) {
+        
+        //Si no hay abuelo no hay tío
+        if (abuelo == null) {
             return null;
         }
 
-        //Para encontrar el hermano del padre
-        if (padre.getElement().compareTo(r.getElement()) < 0) { //Si el padre es menor que la raíz
-            return padre.getRight();
-        } else {
-            return padre.getLeft(); //Si el padre es mayor
+        //Si no hay padre/es la raíz no hay tío
+        if (padre == null) {
+            return null;
         }
+
+        //Revisamos los hijos del abuelo para hallar al tío
+        if (abuelo.getLeft() != null && abuelo.getRight() == padre) { // El tío es el hijo izquierdo
+            return abuelo.getLeft();
+        } else if (abuelo.getRight() != null && abuelo.getLeft() == padre) { //El tío es el hijo derecho
+            return abuelo.getRight();
+        } else if (abuelo.getRight() == null && abuelo.getLeft() == padre) { //El abuelo no tiene hijo derecho
+            return null;
+        } else if (abuelo.getLeft() == null && abuelo.getRight() == padre) { //El abuelo no tiene hijo izquierdo
+            return null;
+        } else {
+            return null; //No hay tío
+        }
+
     }
-    
-    //Función para obtener al abuelo del nodo
-    public Nodo obtenerAbuelo(Nodo r, T elemento){
+
+//Función para obtener al abuelo del nodo
+    public Nodo obtenerAbuelo(Nodo r, T elemento) {
         //Encontramos el padre del nodo
         Nodo padre = obtenerPadre(r, elemento);
-        
+
         //Si no se encuentra el padre o es la raíz entonces no hay abuelo
         if (padre == null || padre == r) {
             return null;
         }
-        
+
         //Encontrar al abuelo (padre del padre)
         return obtenerPadre(r, (T) padre.getElement());
     }
@@ -496,6 +516,7 @@ public class Arbol<T extends Comparable<T>> implements Iterable<T> {
     @Override
     public Iterator<T> iterator() {
         return new ArbolIterator(root);
+
     }
 
     private class ArbolIterator implements Iterator<T> {

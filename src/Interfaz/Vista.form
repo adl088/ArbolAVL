@@ -59,13 +59,8 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="B&#xfa;squeda Avanzada"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
-                <BevelBorder>
-                  <Color PropertyName="highlightOuter" blue="0" green="0" red="0" type="rgb"/>
-                  <Color PropertyName="highlightInner" blue="0" green="0" red="0" type="rgb"/>
-                  <Color PropertyName="shadowOuter" blue="0" green="0" red="0" type="rgb"/>
-                  <Color PropertyName="shadowInner" blue="0" green="0" red="0" type="rgb"/>
-                </BevelBorder>
+              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                <LineBorder thickness="2"/>
               </Border>
             </Property>
           </Properties>
@@ -82,13 +77,8 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Recorrido Por Niveles"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
-                <BevelBorder>
-                  <Color PropertyName="highlightOuter" blue="0" green="0" red="0" type="rgb"/>
-                  <Color PropertyName="highlightInner" blue="0" green="0" red="0" type="rgb"/>
-                  <Color PropertyName="shadowOuter" blue="0" green="0" red="0" type="rgb"/>
-                  <Color PropertyName="shadowInner" blue="0" green="0" red="0" type="rgb"/>
-                </BevelBorder>
+              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                <LineBorder thickness="2"/>
               </Border>
             </Property>
           </Properties>
@@ -105,13 +95,8 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Buscar Nodo"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
-                <BevelBorder>
-                  <Color PropertyName="highlightOuter" blue="0" green="0" red="0" type="rgb"/>
-                  <Color PropertyName="highlightInner" blue="0" green="0" red="0" type="rgb"/>
-                  <Color PropertyName="shadowOuter" blue="0" green="0" red="0" type="rgb"/>
-                  <Color PropertyName="shadowInner" blue="0" green="0" red="0" type="rgb"/>
-                </BevelBorder>
+              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                <LineBorder thickness="2"/>
               </Border>
             </Property>
           </Properties>
@@ -128,13 +113,8 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="PostOrden"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
-                <BevelBorder>
-                  <Color PropertyName="highlightOuter" blue="0" green="0" red="0" type="rgb"/>
-                  <Color PropertyName="highlightInner" blue="0" green="0" red="0" type="rgb"/>
-                  <Color PropertyName="shadowOuter" blue="0" green="0" red="0" type="rgb"/>
-                  <Color PropertyName="shadowInner" blue="0" green="0" red="0" type="rgb"/>
-                </BevelBorder>
+              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                <LineBorder thickness="2"/>
               </Border>
             </Property>
           </Properties>
@@ -151,13 +131,8 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="PreOrden"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
-                <BevelBorder>
-                  <Color PropertyName="highlightOuter" blue="0" green="0" red="0" type="rgb"/>
-                  <Color PropertyName="highlightInner" blue="0" green="0" red="0" type="rgb"/>
-                  <Color PropertyName="shadowOuter" blue="0" green="0" red="0" type="rgb"/>
-                  <Color PropertyName="shadowInner" blue="0" green="0" red="0" type="rgb"/>
-                </BevelBorder>
+              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                <LineBorder thickness="2"/>
               </Border>
             </Property>
           </Properties>
@@ -174,13 +149,8 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="InOrden"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
-                <BevelBorder>
-                  <Color PropertyName="highlightOuter" blue="0" green="0" red="0" type="rgb"/>
-                  <Color PropertyName="highlightInner" blue="0" green="0" red="0" type="rgb"/>
-                  <Color PropertyName="shadowOuter" blue="0" green="0" red="0" type="rgb"/>
-                  <Color PropertyName="shadowInner" blue="0" green="0" red="0" type="rgb"/>
-                </BevelBorder>
+              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                <LineBorder thickness="2"/>
               </Border>
             </Property>
           </Properties>
@@ -197,13 +167,8 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Insertar Nodo"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
-                <BevelBorder>
-                  <Color PropertyName="highlightOuter" blue="0" green="0" red="0" type="rgb"/>
-                  <Color PropertyName="highlightInner" blue="0" green="0" red="0" type="rgb"/>
-                  <Color PropertyName="shadowOuter" blue="0" green="0" red="0" type="rgb"/>
-                  <Color PropertyName="shadowInner" blue="0" green="0" red="0" type="rgb"/>
-                </BevelBorder>
+              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                <LineBorder thickness="2"/>
               </Border>
             </Property>
           </Properties>
@@ -220,13 +185,8 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Eliminar Nodo"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
-                <BevelBorder>
-                  <Color PropertyName="highlightOuter" blue="0" green="0" red="0" type="rgb"/>
-                  <Color PropertyName="highlightInner" blue="0" green="0" red="0" type="rgb"/>
-                  <Color PropertyName="shadowOuter" blue="0" green="0" red="0" type="rgb"/>
-                  <Color PropertyName="shadowInner" blue="0" green="0" red="0" type="rgb"/>
-                </BevelBorder>
+              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                <LineBorder thickness="2"/>
               </Border>
             </Property>
           </Properties>
@@ -274,13 +234,8 @@
                 <Property name="rows" type="int" value="5"/>
                 <Property name="text" type="java.lang.String" value="&#xa;"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
-                    <BevelBorder>
-                      <Color PropertyName="highlightOuter" blue="0" green="0" red="0" type="rgb"/>
-                      <Color PropertyName="highlightInner" blue="0" green="0" red="0" type="rgb"/>
-                      <Color PropertyName="shadowOuter" blue="0" green="0" red="0" type="rgb"/>
-                      <Color PropertyName="shadowInner" blue="0" green="0" red="0" type="rgb"/>
-                    </BevelBorder>
+                  <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                    <LineBorder thickness="2"/>
                   </Border>
                 </Property>
               </Properties>
@@ -362,7 +317,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel1">
+        <Component class="javax.swing.JLabel" name="melt">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/img/p.png"/>

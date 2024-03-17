@@ -54,24 +54,23 @@ public class Data implements Comparable<Data> {
 
     public static String getFileName(Path path) {
         String fileName = path.getFileName().toString(); // Obtiene el nombre del archivo como una cadena
-        int dotIndex = fileName.indexOf('.'); // Encuentra el índice del primer punto en el nombre del archivo
-        int dashIndex = fileName.indexOf('-'); // Encuentra el índice del primer guion en el nombre del archivo
+        int dotIndex = fileName.lastIndexOf('.'); // Encuentra el índice del último punto en el nombre del archivo
+        int dashIndex = fileName.lastIndexOf('-'); // Encuentra el índice del último guion en el nombre del archivo
+        int pointIndex = fileName.indexOf(".");
 
-        // Verifica si hay un guion en el nombre del archivo y que no esté al principio
-        if (dashIndex > 0) {
-            // Si hay un guion y una extensión, devuelve el nombre del archivo sin la extensión y el guion
-            if (dotIndex > 0) {
-                return fileName.substring(0, Math.min(dotIndex, dashIndex));
-            }
-            // Si hay un guion pero no hay una extensión, devuelve el nombre del archivo sin el guion
-            return fileName.substring(0, dashIndex);
-        }
-        // Si no hay guion, devuelve el nombre del archivo sin la extensión
+        // Verifica si hay un punto y que no esté al principio del nombre del archivo
         if (dotIndex > 0) {
-            return fileName.substring(0, dotIndex);
+            // Si hay un guion antes del punto, reemplaza el guion con un guion bajo (_)
+            if (dashIndex > 0 && dashIndex < dotIndex) {
+                fileName = fileName.substring(0, dashIndex) + "_" + fileName.substring(dashIndex + 1, dotIndex) + fileName.substring(dotIndex);
+            }
+            // Si hay un punto antes del punto de extensión, reemplaza el punto con un guion bajo (_)
+            if (pointIndex != dotIndex) {
+                fileName = fileName.substring(0, pointIndex) + "_" + fileName.substring(pointIndex+1, dotIndex);
+            }
+            return fileName.substring(0, dotIndex); // Devuelve el nombre del archivo sin la extensión
         }
-        // Si no hay guion ni extensión, devuelve el nombre completo del archivo
-        return fileName;
+        return fileName; // Devuelve el nombre completo si no tiene extensión
     }
 
     @Override

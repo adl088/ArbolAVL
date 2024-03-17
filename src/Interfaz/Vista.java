@@ -35,6 +35,12 @@ public class Vista extends javax.swing.JFrame {
     ArrayList<String> post = new ArrayList<String>();
     ArrayList<String> niv = new ArrayList<String>();
 
+    public Icon delete = new ImageIcon(getClass().getResource("/img\\del.png"));
+    public Icon error = new ImageIcon(getClass().getResource("/img\\not_found.png"));
+    public Icon search = new ImageIcon(getClass().getResource("/img\\busqueda.png"));
+    public Icon deleted = new ImageIcon(getClass().getResource("/img\\deleted.png"));
+    public Icon nodes = new ImageIcon(getClass().getResource("/img\\nodos.png"));
+
     /**
      * Creates new form Vista
      */
@@ -70,7 +76,7 @@ public class Vista extends javax.swing.JFrame {
         backVista = new javax.swing.JLabel();
         backVista1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        melt = new javax.swing.JLabel();
         fondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -81,7 +87,7 @@ public class Vista extends javax.swing.JFrame {
         fondoPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         busquedaAD.setText("Búsqueda Avanzada");
-        busquedaAD.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0)));
+        busquedaAD.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         busquedaAD.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 busquedaADActionPerformed(evt);
@@ -90,7 +96,7 @@ public class Vista extends javax.swing.JFrame {
         fondoPanel.add(busquedaAD, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 170, 180, 50));
 
         recorridoNiveles.setText("Recorrido Por Niveles");
-        recorridoNiveles.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0)));
+        recorridoNiveles.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         recorridoNiveles.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 recorridoNivelesActionPerformed(evt);
@@ -99,7 +105,7 @@ public class Vista extends javax.swing.JFrame {
         fondoPanel.add(recorridoNiveles, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 300, 140, 50));
 
         buscarB.setText("Buscar Nodo");
-        buscarB.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0)));
+        buscarB.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         buscarB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buscarBActionPerformed(evt);
@@ -108,7 +114,7 @@ public class Vista extends javax.swing.JFrame {
         fondoPanel.add(buscarB, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 170, 170, 50));
 
         postOrden.setText("PostOrden");
-        postOrden.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0)));
+        postOrden.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         postOrden.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 postOrdenActionPerformed(evt);
@@ -117,7 +123,7 @@ public class Vista extends javax.swing.JFrame {
         fondoPanel.add(postOrden, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 390, 140, 50));
 
         preOrden.setText("PreOrden");
-        preOrden.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0)));
+        preOrden.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         preOrden.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 preOrdenActionPerformed(evt);
@@ -126,7 +132,7 @@ public class Vista extends javax.swing.JFrame {
         fondoPanel.add(preOrden, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 390, 140, 50));
 
         inOrden.setText("InOrden");
-        inOrden.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0)));
+        inOrden.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         inOrden.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 inOrdenActionPerformed(evt);
@@ -135,7 +141,7 @@ public class Vista extends javax.swing.JFrame {
         fondoPanel.add(inOrden, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 390, 140, 50));
 
         insertarB.setText("Insertar Nodo");
-        insertarB.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0)));
+        insertarB.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         insertarB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 insertarBActionPerformed(evt);
@@ -144,7 +150,7 @@ public class Vista extends javax.swing.JFrame {
         fondoPanel.add(insertarB, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 90, 170, 50));
 
         EliminarB.setText("Eliminar Nodo");
-        EliminarB.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0)));
+        EliminarB.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         EliminarB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 EliminarBActionPerformed(evt);
@@ -161,7 +167,7 @@ public class Vista extends javax.swing.JFrame {
         recorridos.setFont(new java.awt.Font("Roboto", 0, 24)); // NOI18N
         recorridos.setRows(5);
         recorridos.setText("\n");
-        recorridos.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0)));
+        recorridos.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         jScrollPane2.setViewportView(recorridos);
 
         fondoPanel.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 450, 450, 100));
@@ -186,8 +192,8 @@ public class Vista extends javax.swing.JFrame {
         jLabel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         fondoPanel.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 10, 1020, 570));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/p.png"))); // NOI18N
-        fondoPanel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        melt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/p.png"))); // NOI18N
+        fondoPanel.add(melt, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/backGROUND (1).png"))); // NOI18N
         fondo.setAlignmentY(0.0F);
@@ -235,16 +241,21 @@ public class Vista extends javax.swing.JFrame {
 
     private void EliminarBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarBActionPerformed
 
-        String name = (String) JOptionPane.showInputDialog(null, "Ingrese nodo a eliminar", "ELIMINAR NODO", JOptionPane.INFORMATION_MESSAGE, null, null, "");
-        
-        for (var a : arbolAVL) {
-            Data aa = (Data) a;
-            if (aa.toString().equals(name)) {
-                arbolAVL.eliminar(aa);
-                break;
+        String name = (String) JOptionPane.showInputDialog(null, "Ingrese nodo a eliminar", "ELIMINAR NODO", JOptionPane.INFORMATION_MESSAGE, delete, null, "");
+
+        if (arbolAVL.buscar(arbolAVL.getRoot(), name) != null) {
+            for (var a : arbolAVL) {
+                Data aa = (Data) a;
+                if (aa.toString().equals(name)) {
+                    arbolAVL.eliminar(aa);
+                    break;
+                }
             }
+            updateArbol();
+        } else {
+            JOptionPane.showMessageDialog(null, "Nodo no encontrado", "Error", HEIGHT, error);
         }
-        updateArbol();
+
     }//GEN-LAST:event_EliminarBActionPerformed
 
     private void inOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inOrdenActionPerformed
@@ -279,20 +290,27 @@ public class Vista extends javax.swing.JFrame {
 
     private void buscarBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarBActionPerformed
 
-        String name = (String) JOptionPane.showInputDialog(null, "Ingrese nodo a buscar", "BUSCAR NODO", JOptionPane.INFORMATION_MESSAGE, null, null, "");
+        String name = (String) JOptionPane.showInputDialog(null, "Ingrese nodo a buscar:", "BUSCAR NODO", JOptionPane.INFORMATION_MESSAGE, search, null, "");
 
-        if (arbolAVL.buscar(arbolAVL.getRoot(), name) != null) {
-            JOptionPane.showMessageDialog(null, "Nodo encontrado: " + name
-                    + "\nFactor de equilibrio: "
-                    + arbolAVL.obtenerFE(arbolAVL.buscar(arbolAVL.getRoot(), name))
-                    + "\nNivel: " + arbolAVL.obtenerNivel(arbolAVL.getRoot(), arbolAVL.buscar(arbolAVL.getRoot(), name).getElement(), 0)
-                    + "\nPadre: " + arbolAVL.obtenerPadre(arbolAVL.getRoot(), arbolAVL.buscar(arbolAVL.getRoot(), name).getElement())
-                    + "\nTío: " + arbolAVL.obtenerTio(arbolAVL.getRoot(), arbolAVL.buscar(arbolAVL.getRoot(), name).getElement())
-                    + "\nAbuelo: " + arbolAVL.obtenerAbuelo(arbolAVL.getRoot(), arbolAVL.buscar(arbolAVL.getRoot(), name).getElement()));
-        } else {
-            JOptionPane.showMessageDialog(null, "Nodo no encontrado");
-            System.out.println(arbolAVL.buscar(arbolAVL.getRoot(), name));
+        try {
+            if (arbolAVL.buscar(arbolAVL.getRoot(), name) != null) {
+                JOptionPane.showMessageDialog(null, "Nodo encontrado: " + name
+                        + "\nFactor de equilibrio: "
+                        + arbolAVL.obtenerFE(arbolAVL.buscar(arbolAVL.getRoot(), name))
+                        + "\nNivel: " + arbolAVL.obtenerNivel(arbolAVL.getRoot(), arbolAVL.buscar(arbolAVL.getRoot(), name).getElement(), 0)
+                        + "\nPadre: " + arbolAVL.obtenerPadre(arbolAVL.getRoot(), arbolAVL.buscar(arbolAVL.getRoot(), name).getElement())
+                        + "\nTío: " + arbolAVL.obtenerTio(arbolAVL.getRoot(), arbolAVL.buscar(arbolAVL.getRoot(), name).getElement())
+                        + "\nAbuelo: " + arbolAVL.obtenerAbuelo(arbolAVL.getRoot(), arbolAVL.buscar(arbolAVL.getRoot(), name).getElement()),
+                        "BUSCAR NODO:", HEIGHT, nodes);
+            } else {
+                JOptionPane.showMessageDialog(null, "Nodo no encontrado", "Error", HEIGHT, error);
+                System.out.println(arbolAVL.buscar(arbolAVL.getRoot(), name));
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Nodo no encontrado", "Error", HEIGHT, error);
         }
+
+
     }//GEN-LAST:event_buscarBActionPerformed
 
     private void recorridoNivelesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recorridoNivelesActionPerformed
@@ -364,9 +382,9 @@ public class Vista extends javax.swing.JFrame {
     private javax.swing.JPanel fondoPanel;
     private javax.swing.JButton inOrden;
     private javax.swing.JButton insertarB;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel melt;
     private javax.swing.JButton postOrden;
     private javax.swing.JButton preOrden;
     private javax.swing.JButton recorridoNiveles;
