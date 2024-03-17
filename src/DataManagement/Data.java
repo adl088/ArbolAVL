@@ -56,7 +56,7 @@ public class Data implements Comparable<Data> {
         String fileName = path.getFileName().toString(); // Obtiene el nombre del archivo como una cadena
         int dotIndex = fileName.lastIndexOf('.'); // Encuentra el índice del último punto en el nombre del archivo
         int dashIndex = fileName.lastIndexOf('-'); // Encuentra el índice del último guion en el nombre del archivo
-        int pointIndex = fileName.indexOf(".");
+        int pointIndex = fileName.indexOf("."); //Encuentra el índice del primer punto en el nombre del archivo
 
         // Verifica si hay un punto y que no esté al principio del nombre del archivo
         if (dotIndex > 0) {

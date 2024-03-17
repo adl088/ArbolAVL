@@ -232,6 +232,7 @@ public class Vista extends javax.swing.JFrame {
                 last = fileChooser.getSelectedFile().toPath();
                 addToArbol();
                 updateArbol();
+                recorridos.setText("");
             } catch (IOException ex) {
                 System.out.println("Hubo error al añadir el arbol");
                 Logger.getLogger(Vista.class.getName()).log(Level.SEVERE, null, ex);
@@ -255,37 +256,21 @@ public class Vista extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, "Nodo no encontrado", "Error", HEIGHT, error);
         }
+        
+        recorridos.setText("");
 
     }//GEN-LAST:event_EliminarBActionPerformed
 
     private void inOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inOrdenActionPerformed
-        recorridos.setText("");
-        in.clear();
-        arbolAVL.inordenRE(arbolAVL.getRoot(), in);
-        recorridos.append("InOrden: ");
-        recorridos.append("\n");
-        recorridos.append("\n");
-        recorridos.append(in.toString());
+        updateInorden();
     }//GEN-LAST:event_inOrdenActionPerformed
 
     private void preOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preOrdenActionPerformed
-        recorridos.setText("");
-        pre.clear();
-        arbolAVL.preordenRE(arbolAVL.getRoot(), pre);
-        recorridos.append("PreOrden: ");
-        recorridos.append("\n");
-        recorridos.append("\n");
-        recorridos.append(pre.toString());
+        updatePreorden();
     }//GEN-LAST:event_preOrdenActionPerformed
 
     private void postOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_postOrdenActionPerformed
-        recorridos.setText("");
-        post.clear();
-        arbolAVL.postordenRE(arbolAVL.getRoot(), post);
-        recorridos.append("PostOrden: ");
-        recorridos.append("\n");
-        recorridos.append("\n");
-        recorridos.append(post.toString());
+        updatePostorden();
     }//GEN-LAST:event_postOrdenActionPerformed
 
     private void buscarBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarBActionPerformed
@@ -314,19 +299,13 @@ public class Vista extends javax.swing.JFrame {
     }//GEN-LAST:event_buscarBActionPerformed
 
     private void recorridoNivelesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recorridoNivelesActionPerformed
-        recorridos.setText("");
-        niv.clear();
-        arbolAVL.recorridoPorNivelesRE(arbolAVL.getRoot(), niv);
-        recorridos.append("Recorrido por Niveles: ");
-        recorridos.append("\n");
-        recorridos.append("\n");
-        recorridos.append(niv.toString());
+        updateNiveles();
     }//GEN-LAST:event_recorridoNivelesActionPerformed
 
     private void busquedaADActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busquedaADActionPerformed
         String type = JOptionPane.showInputDialog(null, "Ingrese una categoría: ");
 
-        String rango = JOptionPane.showInputDialog(null, "Ingrese un peso máximo: ");
+        String rango = JOptionPane.showInputDialog(null, "Rango de peso: ");
 
     }//GEN-LAST:event_busquedaADActionPerformed
 
@@ -350,6 +329,50 @@ public class Vista extends javax.swing.JFrame {
         Image img = new ImageIcon(root).getImage();
         ImageIcon img2 = new ImageIcon(img.getScaledInstance(200, 300, Image.SCALE_SMOOTH));
         name.setIcon(img2);
+    }
+
+    //Muestra el recorrido por niveles
+    private void updateNiveles() {
+        recorridos.setText("");
+        niv.clear();
+        arbolAVL.recorridoPorNivelesRE(arbolAVL.getRoot(), niv);
+        recorridos.append("Recorrido por Niveles: ");
+        recorridos.append("\n");
+        recorridos.append("\n");
+        recorridos.append(niv.toString());
+    }
+
+    //Muestra el recorrido PreOrden
+    private void updatePreorden() {
+        recorridos.setText("");
+        pre.clear();
+        arbolAVL.preordenRE(arbolAVL.getRoot(), pre);
+        recorridos.append("PreOrden: ");
+        recorridos.append("\n");
+        recorridos.append("\n");
+        recorridos.append(pre.toString());
+    }
+
+    //Muestra el recorridoInOrden
+    private void updateInorden() {
+        recorridos.setText("");
+        in.clear();
+        arbolAVL.inordenRE(arbolAVL.getRoot(), in);
+        recorridos.append("InOrden: ");
+        recorridos.append("\n");
+        recorridos.append("\n");
+        recorridos.append(in.toString());
+    }
+    
+    //Muestra el recorrido PostOrden
+    private void updatePostorden(){
+        recorridos.setText("");
+        post.clear();
+        arbolAVL.postordenRE(arbolAVL.getRoot(), post);
+        recorridos.append("PostOrden: ");
+        recorridos.append("\n");
+        recorridos.append("\n");
+        recorridos.append(post.toString());
     }
 
     /**
