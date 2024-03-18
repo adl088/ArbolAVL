@@ -43,6 +43,7 @@ public class Vista extends javax.swing.JFrame {
     public Icon search = new ImageIcon(getClass().getResource("/img\\busqueda.png"));
     public Icon deleted = new ImageIcon(getClass().getResource("/img\\deleted.png"));
     public Icon nodes = new ImageIcon(getClass().getResource("/img\\nodos.png"));
+    public Icon categories = new ImageIcon(getClass().getResource("/img\\categories.png"));
 
     /**
      * Creates new form Vista
@@ -51,6 +52,7 @@ public class Vista extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         setIcon();
+        updateArbol();
         setImage(arbol, "src/img/arbol.png");
     }
 
@@ -313,22 +315,24 @@ public class Vista extends javax.swing.JFrame {
     }//GEN-LAST:event_recorridoNivelesActionPerformed
 
     private void busquedaADActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busquedaADActionPerformed
-        String type = JOptionPane.showInputDialog(null, """
-                                                     Ingrese una de las siguientes categorias:
+        String type = (String) JOptionPane.showInputDialog(null, """
+                                                     Ingrese una de las siguientes categorias:                                                   
                                                      -Bike     -Cars
                                                      -Cats     -Dogs
                                                      -Flowers  -Horses
-                                                     -Human""");
+                                                     -Human""",
+                "BÚSQUEDA AVANZADA:", JOptionPane.INFORMATION_MESSAGE, categories, null, "");
 
         //Verificar que la categoria sea valida
         while (!Data.IsCategoryvalid(type)) {
             //Aqui la respectiva validacion
-            type = JOptionPane.showInputDialog(null, """
-                                                     Ingrese una de las siguientes categorias:
+            type = (String) JOptionPane.showInputDialog(null, """
+                                                     Ingrese una de las siguientes categorias:                                                    
                                                      -Bike     -Cars
                                                      -Cats     -Dogs
                                                      -Flowers  -Horses
-                                                     -Human""");
+                                                     -Human""",
+                    "BÚSQUEDA AVANZADA:", JOptionPane.INFORMATION_MESSAGE, categories, null, "");
         }
 
         int min = 0;
@@ -337,20 +341,20 @@ public class Vista extends javax.swing.JFrame {
         //Verificar los numeros que sean validos
         while (true) {
             try {
-                String r = JOptionPane.showInputDialog(null, "Ingrese el peso mínimo (mayor o igual a cero): ");
-                String r2 = JOptionPane.showInputDialog(null, "Ingrese el peso máximo (mayor a cero): ");
+                String r = (String) JOptionPane.showInputDialog(null, "Ingrese el peso mínimo (mayor o igual a cero): ", "BÚSQUEDA AVANZADA: ", JOptionPane.INFORMATION_MESSAGE, categories, null, "");
+                String r2 = (String) JOptionPane.showInputDialog(null, "Ingrese el peso máximo (mayor a cero): ", "BÚSQUEDA AVANZADA: ", JOptionPane.INFORMATION_MESSAGE, categories, null, "");
                 min = Integer.parseInt(r);
                 max = Integer.parseInt(r2);
 
-                if (min < 0) {
+                if (min < 0 || max < 0) {
                     throw new InputMismatchException("Error al convertir el valor minimo");
                 }
 
                 break; // Si llega aqui es que todo fue bien y se sale del while
             } catch (InputMismatchException a) {
-                JOptionPane.showMessageDialog(null, "El valor minimo no puede ser menor a cero");
+                JOptionPane.showMessageDialog(null, "Los valores no pueden ser menores a cero", "Error", HEIGHT, error);
             } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Valor invalido para el minimo o el maximo.");
+                JOptionPane.showMessageDialog(null, "Valor invalido para el minimo o el maximo.", "Error", HEIGHT, error);
             }
         }
 
@@ -387,7 +391,7 @@ public class Vista extends javax.swing.JFrame {
                 }
             }
         } else {
-            JOptionPane.showMessageDialog(null, "No se encontro ningun nodo que cumpliera con las condicions dadas.");
+            JOptionPane.showMessageDialog(null, "No se encontró ningún nodo que cumpliera con las condiciones dadas", "Error", HEIGHT, error);
         }
     }//GEN-LAST:event_busquedaADActionPerformed
 
