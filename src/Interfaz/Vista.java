@@ -13,11 +13,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
 import com.formdev.flatlaf.FlatLightLaf;
+import java.awt.List;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -311,16 +313,82 @@ public class Vista extends javax.swing.JFrame {
     }//GEN-LAST:event_recorridoNivelesActionPerformed
 
     private void busquedaADActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busquedaADActionPerformed
-        String type = JOptionPane.showInputDialog(null, "Ingrese una categoría: ");
+        String type = JOptionPane.showInputDialog(null, """
+                                                     Ingrese una de las siguientes categorias:
+                                                     -Bike     -Cars
+                                                     -Cats     -Dogs
+                                                     -Flowers  -Horses
+                                                     -Human""");
 
-        String r = JOptionPane.showInputDialog(null, "Ingrese el peso mínimo: ");
-        String r2 = JOptionPane.showInputDialog(null, "Ingrese el peso máximo: ");
+        //Verificar que la categoria sea valida
+        while (!Data.IsCategoryvalid(type)) {
+            //Aqui la respectiva validacion
+            type = JOptionPane.showInputDialog(null, """
+                                                     Ingrese una de las siguientes categorias:
+                                                     -Bike     -Cars
+                                                     -Cats     -Dogs
+                                                     -Flowers  -Horses
+                                                     -Human""");
+        }
 
-        int min = Integer.parseInt(r);
-        int max = Integer.parseInt(r2);
+        int min = 0;
+        int max = 0;
 
-  
+        //Verificar los numeros que sean validos
+        while (true) {
+            try {
+                String r = JOptionPane.showInputDialog(null, "Ingrese el peso mínimo (mayor o igual a cero): ");
+                String r2 = JOptionPane.showInputDialog(null, "Ingrese el peso máximo (mayor a cero): ");
+                min = Integer.parseInt(r);
+                max = Integer.parseInt(r2);
 
+                if (min < 0) {
+                    throw new InputMismatchException("Error al convertir el valor minimo");
+                }
+
+                break; // Si llega aqui es que todo fue bien y se sale del while
+            } catch (InputMismatchException a) {
+                JOptionPane.showMessageDialog(null, "El valor minimo no puede ser menor a cero");
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Valor invalido para el minimo o el maximo.");
+            }
+        }
+
+        //Organizan con esos parametros (min <= size <= max) && (categoria)
+        ArrayList<Data> datos = new ArrayList<>();
+        for (var dato : arbolAVL) {
+            if (dato instanceof Data datoo) {
+                //Condicion para cumplir con los parametros
+                if (type.equalsIgnoreCase(datoo.getCategoria()) && (min <= datoo.getSize() && datoo.getSize() <= max)) {
+                    datos.add(datoo);
+                }
+            }
+        }
+
+        if (!datos.isEmpty()) {
+            for (var d : datos) {
+                try {
+                    String name = d.getName();
+                    if (arbolAVL.buscar(arbolAVL.getRoot(), name) != null) {
+                        JOptionPane.showMessageDialog(null, "Nodo encontrado: " + name
+                                + "\nFactor de equilibrio: "
+                                + arbolAVL.obtenerFE(arbolAVL.buscar(arbolAVL.getRoot(), name))
+                                + "\nNivel: " + arbolAVL.obtenerNivel(arbolAVL.getRoot(), arbolAVL.buscar(arbolAVL.getRoot(), name).getElement(), 0)
+                                + "\nPadre: " + arbolAVL.obtenerPadre(arbolAVL.getRoot(), arbolAVL.buscar(arbolAVL.getRoot(), name).getElement())
+                                + "\nTío: " + arbolAVL.obtenerTio(arbolAVL.getRoot(), arbolAVL.buscar(arbolAVL.getRoot(), name).getElement())
+                                + "\nAbuelo: " + arbolAVL.obtenerAbuelo(arbolAVL.getRoot(), arbolAVL.buscar(arbolAVL.getRoot(), name).getElement()),
+                                "BUSCAR NODO:", HEIGHT, nodes);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Nodo no encontrado", "Error", HEIGHT, error);
+                        System.out.println(arbolAVL.buscar(arbolAVL.getRoot(), name));
+                    }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "Nodo no encontrado", "Error", HEIGHT, error);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No se encontro ningun nodo que cumpliera con las condicions dadas.");
+        }
     }//GEN-LAST:event_busquedaADActionPerformed
 
     //Actualiza la imagen del árbol

@@ -114,7 +114,19 @@ public class Data implements Comparable<Data> {
         }
     }
 
-
+    
+    public static boolean IsCategoryvalid(String categoria){
+      String[] categorias = {"Bike", "Cars", "Cats", "Dogs", "Flowers", "Horses", "Human"};
+      
+       for (String s : categorias) {
+           if (s.equalsIgnoreCase(categoria)) {
+               return true;
+           }
+       }
+        
+      return false;
+    }
+    
     @Override
     public int compareTo(Data o) {
         return this.name.compareTo(o.name);
