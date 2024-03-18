@@ -5,6 +5,5 @@ digraph G
      node[fillcolor = "#FFB6C1"]
      node[color = "#FFB6C1"]
      edge[color = "#000000"]
-cat_3->horse_16
-
+carsgraz_002
 }

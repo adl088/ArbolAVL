@@ -455,8 +455,9 @@ public class Arbol<T extends Comparable<T>> implements Iterable<T> {
 
         //Encontrar al abuelo (padre del padre)
         return obtenerPadre(r, (T) padre.getElement());
-    }    
-    
+    }
+
+
     public String obtenerCodigoGraphviz() {
         String texto = "digraph G\n"
                 + "{\n"

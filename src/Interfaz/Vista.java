@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
 import com.formdev.flatlaf.FlatLightLaf;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -47,7 +48,13 @@ public class Vista extends javax.swing.JFrame {
     public Vista() {
         initComponents();
         this.setLocationRelativeTo(null);
+        setIcon();
         setImage(arbol, "src/img/arbol.png");
+    }
+
+    //metodo para establecer icon
+    private void setIcon() {
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/img\\icon.png")));
     }
 
     /**
@@ -80,6 +87,7 @@ public class Vista extends javax.swing.JFrame {
         fondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Árbol AVL");
         setMaximumSize(new java.awt.Dimension(2147483647, 590));
         setResizable(false);
 
@@ -256,7 +264,7 @@ public class Vista extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, "Nodo no encontrado", "Error", HEIGHT, error);
         }
-        
+
         recorridos.setText("");
 
     }//GEN-LAST:event_EliminarBActionPerformed
@@ -307,10 +315,11 @@ public class Vista extends javax.swing.JFrame {
 
         String r = JOptionPane.showInputDialog(null, "Ingrese el peso mínimo: ");
         String r2 = JOptionPane.showInputDialog(null, "Ingrese el peso máximo: ");
-        
+
         int min = Integer.parseInt(r);
         int max = Integer.parseInt(r2);
-     
+
+  
 
     }//GEN-LAST:event_busquedaADActionPerformed
 
@@ -368,9 +377,9 @@ public class Vista extends javax.swing.JFrame {
         recorridos.append("\n");
         recorridos.append(in.toString());
     }
-    
+
     //Muestra el recorrido PostOrden
-    private void updatePostorden(){
+    private void updatePostorden() {
         recorridos.setText("");
         post.clear();
         arbolAVL.postordenRE(arbolAVL.getRoot(), post);

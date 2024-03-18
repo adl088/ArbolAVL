@@ -18,10 +18,29 @@ public class Nodo<T extends Comparable<T>> {
     private Nodo left;
     private Nodo right;
     private int alt;
+    private String category;
+    private int size;
 
     public int getAlt() {
         return alt;
     }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+    
 
     public void setAlt(int alt) {
         this.alt = alt;

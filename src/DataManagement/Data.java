@@ -71,7 +71,7 @@ public class Data implements Comparable<Data> {
             }
             // Si hay un punto antes del punto de extensión, reemplaza el punto con un guion bajo (_)
             if (pointIndex != dotIndex) {
-                fileName = fileName.substring(0, pointIndex) + "_" + fileName.substring(pointIndex+1, dotIndex);
+                fileName = fileName.substring(0, pointIndex) + "_" + fileName.substring(pointIndex + 1, dotIndex);
             }
             return fileName.substring(0, dotIndex); // Devuelve el nombre del archivo sin la extensión
         }
@@ -113,6 +113,7 @@ public class Data implements Comparable<Data> {
             return "Unknown"; // Si el archivo no tiene una carpeta padre
         }
     }
+
 
     @Override
     public int compareTo(Data o) {
