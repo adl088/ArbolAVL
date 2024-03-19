@@ -421,7 +421,7 @@ public class Vista extends javax.swing.JFrame {
     private void updateNiveles() {
         recorridos.setText("");
         niv.clear();
-        arbolAVL.recorridoPorNivelesRE(arbolAVL.getRoot(), niv);
+        arbolAVL.recorridoPorNiveles(arbolAVL.getRoot(), niv);
         recorridos.append("Recorrido por Niveles: ");
         recorridos.append("\n");
         recorridos.append("\n");

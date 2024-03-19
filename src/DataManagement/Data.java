@@ -56,7 +56,7 @@ public class Data implements Comparable<Data> {
         this.size = size;
     }
 
-    //Fundión oara obtener el nombre del archivo
+    //Función oara obtener el nombre del archivo
     public static String getFileName(Path path) {
         String fileName = path.getFileName().toString(); // Obtiene el nombre del archivo como una cadena
         int dotIndex = fileName.lastIndexOf('.'); // Encuentra el índice del último punto en el nombre del archivo

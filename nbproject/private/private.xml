@@ -4,9 +4,11 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/andre/Documents/NetBeansProjects/ArbolAVL/src/Interfaz/Vista.java</file>
+            <file>file:/C:/Users/andre/Documents/NetBeansProjects/ArbolAVL/src/arbol/ArbolAVL.java</file>
             <file>file:/C:/Users/andre/Documents/NetBeansProjects/ArbolAVL/src/arbol/Nodo.java</file>
             <file>file:/C:/Users/andre/Documents/NetBeansProjects/ArbolAVL/src/DataManagement/Data.java</file>
             <file>file:/C:/Users/andre/Documents/NetBeansProjects/ArbolAVL/src/arbol/Arbol.java</file>
+            <file>file:/C:/Users/andre/Documents/NetBeansProjects/ArbolAVL/src/img/arbol.png</file>
         </group>
     </open-files>
 </project-private>

@@ -67,7 +67,6 @@ public class Arbol<T extends Comparable<T>> implements Iterable<T> {
     public void inordenRE(Nodo node, ArrayList<String> in) {
         if (node != null) {
             inordenRE(node.getLeft(), in);
-//            System.out.println(node.getElement());
             String aux = node.getElement().toString();
             in.add(aux);
             inordenRE(node.getRight(), in);
@@ -79,7 +78,6 @@ public class Arbol<T extends Comparable<T>> implements Iterable<T> {
         if (node != null) {
             postordenRE(node.getLeft(), post);
             postordenRE(node.getRight(), post);
-//            System.out.println(node.getElement());
             String aux = node.getElement().toString();
             post.add(aux);
         }
@@ -88,7 +86,6 @@ public class Arbol<T extends Comparable<T>> implements Iterable<T> {
     // Preorden Recursivo
     public void preordenRE(Nodo node, ArrayList<String> pre) {
         if (node != null) {
-//            System.out.println(node.getElement());
             String aux = node.getElement().toString();
             pre.add(aux);
             preordenRE(node.getLeft(), pre);
@@ -96,8 +93,8 @@ public class Arbol<T extends Comparable<T>> implements Iterable<T> {
         }
     }
 
-    //Recorrido por nieveles Recursivo
-    public void recorridoPorNivelesRE(Nodo raiz, ArrayList<String> niv) {
+    //Recorrido por nieveles 
+    public void recorridoPorNiveles(Nodo raiz, ArrayList<String> niv) {
         if (raiz == null) {
             return;
         }
@@ -121,129 +118,213 @@ public class Arbol<T extends Comparable<T>> implements Iterable<T> {
     }
 
     //Método para hallar la altura de un nodo
-    int altura(Nodo nodo) {
+    private int altura(Nodo nodo) {
         if (nodo == null) {
             return 0;
         }
-        return nodo.getAlt();
-    }
 
-    //Método para hallar altura desde un nodo
-    private void altura(Nodo aux, int nivel) {
-        if (aux != null) {
-            altura(aux.getLeft(), nivel + 1);
-            alt = nivel;
-            altura(aux.getRight(), nivel + 1);
+        Queue<Nodo> queue = new LinkedList<>();
+        queue.offer(nodo);
+        int altura = 0;
+
+        while (!queue.isEmpty()) {
+            int nivelSize = queue.size();
+            altura++;
+
+            for (int i = 0; i < nivelSize; i++) {
+                Nodo actual = queue.poll();
+
+                if (actual.getLeft() != null) {
+                    queue.offer(actual.getLeft());
+                }
+
+                if (actual.getRight() != null) {
+                    queue.offer(actual.getRight());
+                }
+            }
         }
-    }
 
-    //Retorna altura del árbol
-    public int getAltura() {
-        altura(root, 1);
-        return alt;
+        return altura;
     }
 
     //Retorna el Factor de equilibrio del Nodo
-    public int obtenerFE(Nodo x) {
-        if (x == null) {
-            return -1;
-        } else {
-            return x.getFe();
+    public int obtenerFE(Nodo nodo) {
+        if (nodo == null) {
+            return 0;
         }
-    }
 
-    //Rotacion Simple Izquierda
-    public Nodo rotacionIzquierda(Nodo c) {
-        Nodo aux = c.getLeft();
-        c.setLeft(aux.getRight());
-        aux.setRight(c);
-        c.setFe((Math.max(obtenerFE(c.getLeft()), obtenerFE(c.getRight())) + 1));
-        aux.setFe((Math.max(obtenerFE(aux.getLeft()), obtenerFE(aux.getRight())) + 1));
-        return aux;
+        int alturaIzquierda = altura(nodo.getLeft());
+        int alturaDerecha = altura(nodo.getRight());
+
+        return alturaDerecha - alturaIzquierda;
     }
 
     //Rotacion Simple Derecha
     public Nodo rotacionDerecha(Nodo c) {
-        Nodo aux = c.getRight();
-        c.setRight(aux.getLeft());
-        aux.setLeft(c);
-        c.setFe((Math.max(obtenerFE(c.getLeft()), obtenerFE(c.getRight())) + 1));
-        aux.setFe((Math.max(obtenerFE(aux.getLeft()), obtenerFE(aux.getRight())) + 1));
+        Nodo aux = c.getLeft();
+        c.setLeft(aux.getRight());
+        aux.setRight(c);
+        c.setFe(obtenerFE(c));
+        aux.setFe(obtenerFE(aux));
         return aux;
     }
 
-    //Rotacion doble izquierda derecha
-    public Nodo rotacionDobleIzquierda(Nodo c) {
-        Nodo temp;
-        c.setLeft(rotacionDerecha(c.getLeft()));
-        temp = rotacionIzquierda(c);
-        return temp;
+    //Rotacion Simple Izquierda
+    public Nodo rotacionIzquierda(Nodo c) {
+        Nodo aux = c.getRight();
+        c.setRight(aux.getLeft());
+        aux.setLeft(c);
+        c.setFe(obtenerFE(c));
+        aux.setFe(obtenerFE(aux));
+        return aux;
     }
 
-    //Rotacion doble derecha izquierda
-    public Nodo rotacionDobleDerecha(Nodo c) {
+    //Rotacion doble izquierda-derecha
+    public Nodo rotacionDobleIzquierda(Nodo c) {
         Nodo temp;
-        c.setRight(rotacionIzquierda(c.getRight()));
+        c.setLeft(rotacionIzquierda(c.getLeft()));
         temp = rotacionDerecha(c);
         return temp;
     }
 
-    //Metodo para insertar al AVL
-    public Nodo insertarAVL(Nodo nuevo, Nodo subAr) {
-        Nodo nuevoPadre = subAr;
-        if (nuevo.getElement().compareTo(subAr.getElement()) < 0) {
-            if (subAr.getLeft() == null) {
-                subAr.setLeft(nuevo);
-            } else {
-                subAr.setLeft(insertarAVL(nuevo, subAr.getLeft()));
-                if ((obtenerFE(subAr.getLeft()) - obtenerFE(subAr.getRight()) == 2)) {
-                    if (nuevo.getElement().compareTo(subAr.getLeft().getElement()) < 0) {
-                        nuevoPadre = rotacionIzquierda(subAr);
-                    } else {
-                        nuevoPadre = rotacionDobleIzquierda(subAr);
-                    }
-                }
-            }
-
-        } else if (nuevo.getElement().compareTo(subAr.getElement()) > 0) {
-            if (subAr.getRight() == null) {
-                subAr.setRight(nuevo);
-            } else {
-                subAr.setRight(insertarAVL(nuevo, subAr.getRight()));
-                if ((obtenerFE(subAr.getRight()) - obtenerFE(subAr.getLeft()) == 2)) {
-                    if (nuevo.getElement().compareTo(subAr.getRight().getElement()) > 0) {
-                        nuevoPadre = rotacionDerecha(subAr);
-                    } else {
-                        nuevoPadre = rotacionDobleDerecha(root);
-                    }
-
-                }
-            }
-        } else {
-            System.out.println("Nodo duplicado");
-            JOptionPane.showMessageDialog(null, "Nodo duplicado", "Error", HEIGHT, error);
-        }
-        //Actualizamos la altura
-        if ((subAr.getLeft() == null) && (subAr.getRight() != null)) {
-            subAr.setFe((subAr.getRight().getFe() + 1));
-        } else if ((subAr.getRight() == null) && (subAr.getLeft() != null)) {
-            subAr.setFe((subAr.getLeft().getFe() + 1));
-        } else {
-            subAr.setFe((Math.max(obtenerFE(subAr.getLeft()), obtenerFE(subAr.getRight())) + 1));
-        }
-        return nuevoPadre;
+    //Rotacion doble derecha-izquierda
+    public Nodo rotacionDobleDerecha(Nodo c) {
+        Nodo temp;
+        c.setRight(rotacionDerecha(c.getRight()));
+        temp = rotacionIzquierda(c);
+        return temp;
     }
 
-    //Método para insertar
+    // Método para insertar
     public void insertar(T elemento) {
         Nodo nuevo = new Nodo(elemento);
+
         if (root == null) {
             root = nuevo;
-        } else {
-            root = insertarAVL(nuevo, root);
+            return;
         }
+
+        Stack<Nodo> stack = new Stack<>();
+
+        Nodo actual = root;
+        Nodo padre = null;
+        boolean ladoIzquierdo = false;
+
+        while (actual != null) {
+            stack.push(actual);
+            padre = actual;
+
+            if (nuevo.getElement().compareTo(actual.getElement()) < 0) {
+                actual = actual.getLeft();
+                ladoIzquierdo = true;
+            } else if (nuevo.getElement().compareTo(actual.getElement()) > 0) {
+                actual = actual.getRight();
+                ladoIzquierdo = false;
+            } else {
+                JOptionPane.showMessageDialog(null, "Nodo duplicado", "Error", HEIGHT, error);
+                return; //No se permiten duplicados
+            }
+        }
+
+        if (ladoIzquierdo) {
+            padre.setLeft(nuevo);
+        } else {
+            padre.setRight(nuevo);
+        }
+
+        while (!stack.isEmpty()) {
+            actual = stack.pop();
+            balancear(actual);
+        }
+
     }
 
+    // Función para balancear un nodo desbalanceado
+    private void balancear(Nodo nodo) {
+        int fe = obtenerFE(nodo);
+
+        if (fe > 1) {
+            //Subárbol izquierdo está desbalanceado
+            if (obtenerFE(nodo.getRight()) < 0) {
+                //Necesitamos una rotación Derecha-Izquierda
+                nodo.setRight(rotacionDerecha(nodo.getRight()));
+            }
+            //Rotación simple izquierda
+            nodo = rotacionIzquierda(nodo);
+
+        } else if (fe < -1) {
+            //Subárbol derecho está desbalanceado
+            if (obtenerFE(nodo.getLeft()) > 0) {
+                nodo.setLeft(rotacionIzquierda(nodo.getLeft()));
+            }
+            //Rotación simple derecha
+            nodo = rotacionDerecha(nodo);
+        }
+
+        //Actualizar la raíz si es necesario
+        if (nodo.getParent() == null) {
+            root = nodo;
+        }
+
+    }
+
+//    //Metodo para insertar al AVL
+//    public Nodo insertarAVL(Nodo nuevo, Nodo subAr) {
+//        Nodo nuevoPadre = subAr;
+//        if (nuevo.getElement().compareTo(subAr.getElement()) < 0) {
+//            if (subAr.getLeft() == null) {
+//                subAr.setLeft(nuevo);
+//            } else {
+//                subAr.setLeft(insertarAVL(nuevo, subAr.getLeft()));
+//                if ((obtenerFE(subAr.getLeft()) - obtenerFE(subAr.getRight()) == 2)) {
+//                    if (nuevo.getElement().compareTo(subAr.getLeft().getElement()) < 0) {
+//                        nuevoPadre = rotacionIzquierda(subAr);
+//                    } else {
+//                        nuevoPadre = rotacionDobleIzquierda(subAr);
+//                    }
+//                }
+//            }
+//
+//        } else if (nuevo.getElement().compareTo(subAr.getElement()) > 0) {
+//            if (subAr.getRight() == null) {
+//                subAr.setRight(nuevo);
+//            } else {
+//                subAr.setRight(insertarAVL(nuevo, subAr.getRight()));
+//                if ((obtenerFE(subAr.getRight()) - obtenerFE(subAr.getLeft()) == 2)) {
+//                    if (nuevo.getElement().compareTo(subAr.getRight().getElement()) > 0) {
+//                        nuevoPadre = rotacionDerecha(subAr);
+//                    } else {
+//                        nuevoPadre = rotacionDobleDerecha(root);
+//                    }
+//
+//                }
+//            }
+//        } else {
+//            System.out.println("Nodo duplicado");
+//            JOptionPane.showMessageDialog(null, "Nodo duplicado", "Error", HEIGHT, error);
+//        }
+//        //Actualizamos la altura
+//        if ((subAr.getLeft() == null) && (subAr.getRight() != null)) {
+//            subAr.setFe((subAr.getRight().getFe() + 1));
+//        } else if ((subAr.getRight() == null) && (subAr.getLeft() != null)) {
+//            subAr.setFe((subAr.getLeft().getFe() + 1));
+//        } else {
+//            subAr.setFe((Math.max(obtenerFE(subAr.getLeft()), obtenerFE(subAr.getRight())) + 1));
+//        }
+//        return nuevoPadre;
+//    }
+//
+//    //Método para insertar
+//    public void insertar(T elemento) {
+//        Nodo nuevo = new Nodo(elemento);
+//        if (root == null) {
+//            root = nuevo;
+//        } else {
+//            root = insertarAVL(nuevo, root);
+//        }
+//    }
+    
+    
     //Halla el predecesor
     public Nodo pred(Nodo r) {
         Nodo p = r.getLeft();
@@ -263,7 +344,7 @@ public class Arbol<T extends Comparable<T>> implements Iterable<T> {
         }
         Nodo aux = new Nodo(elemento);
 
-        // Realizar la eliminación similar a un árbol binario de búsqueda
+        // Realizar la eliminación similar a un ABB
         if (aux.getElement().compareTo(subAr.getElement()) < 0) {
             subAr.setLeft(eliminarAVL(elemento, subAr.getLeft()));
         } else if (aux.getElement().compareTo(subAr.getElement()) > 0) {
@@ -306,18 +387,18 @@ public class Arbol<T extends Comparable<T>> implements Iterable<T> {
         subAr.setFe(Math.max(obtenerFE(subAr.getLeft()), obtenerFE(subAr.getRight())) + 1);
 
         // Rebalancear el árbol
-        int balance = obtenerBalance(subAr);
-        if (balance > 1 && obtenerBalance(subAr.getLeft()) >= 0) {
+        int balance = obtenerFE(subAr);
+        if (balance > 1 && obtenerFE(subAr.getLeft()) >= 0) {
             return rotacionDerecha(subAr);
         }
-        if (balance > 1 && obtenerBalance(subAr.getLeft()) < 0) {
+        if (balance > 1 && obtenerFE(subAr.getLeft()) < 0) {
             subAr.setLeft(rotacionIzquierda(subAr.getLeft()));
             return rotacionDerecha(subAr);
         }
-        if (balance < -1 && obtenerBalance(subAr.getRight()) <= 0) {
+        if (balance < -1 && obtenerFE(subAr.getRight()) <= 0) {
             return rotacionIzquierda(subAr);
         }
-        if (balance < -1 && obtenerBalance(subAr.getRight()) > 0) {
+        if (balance < -1 && obtenerFE(subAr.getRight()) > 0) {
             subAr.setRight(rotacionDerecha(subAr.getRight()));
             return rotacionIzquierda(subAr);
         }
@@ -343,14 +424,6 @@ public class Arbol<T extends Comparable<T>> implements Iterable<T> {
             actual = actual.getLeft();
         }
         return actual;
-    }
-
-    //Obtiene el balance de un nodo 
-    int obtenerBalance(Nodo nodo) {
-        if (nodo == null) {
-            return 0;
-        }
-        return altura(nodo.getLeft()) - altura(nodo.getRight());
     }
 
     //Función para buscar nodo
@@ -457,7 +530,7 @@ public class Arbol<T extends Comparable<T>> implements Iterable<T> {
         return obtenerPadre(r, (T) padre.getElement());
     }
 
-
+    //Obtiene el código para dibujar el árbol
     public String obtenerCodigoGraphviz() {
         String texto = "digraph G\n"
                 + "{\n"
@@ -473,6 +546,7 @@ public class Arbol<T extends Comparable<T>> implements Iterable<T> {
         return texto;
     }
 
+    //  Escribe el archivo .dot
     public void escribirArchivo(String ruta, String contenido) {
         FileWriter fichero = null;
         PrintWriter pw = null;
