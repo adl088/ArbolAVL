@@ -5,5 +5,32 @@ digraph G
      node[fillcolor = "#FFB6C1"]
      node[color = "#FFB6C1"]
      edge[color = "#000000"]
+dog_73->cat_142->bike_110->0177->0129->0038
+0129->0130
+
+0177->bike_072->bike_107
+
+
+bike_110->carsgraz_127->bike_238->carsgraz_100
+
+carsgraz_127->carsgraz_354->carsgraz_177
+carsgraz_354->cat_100
+
+
+
+cat_142->dog_161->cat_72->cat_153
+
+dog_161->dog_60->dog_165
+
+
+
+dog_73->horse_42->horse_139->horse_198
+
+horse_42->rider_107->horse_9
+rider_107->rider_201->rider_125
+rider_201->rider_37
+
+
+
 
 }

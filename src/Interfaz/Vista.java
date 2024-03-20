@@ -6,20 +6,22 @@ package Interfaz;
 
 import DataManagement.Data;
 import arbol.Arbol;
-import arbol.Nodo;
 import java.awt.Image;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
 import com.formdev.flatlaf.FlatLightLaf;
-import java.awt.List;
 import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -54,9 +56,40 @@ public class Vista extends javax.swing.JFrame {
         setIcon();
         updateArbol();
         setImage(arbol, "src/img/arbol.png");
+        arbol.setTransferHandler(new TransferHandler() {
+            public boolean canImport(TransferHandler.TransferSupport info) {
+                return info.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
+            }
+
+            public boolean importData(TransferHandler.TransferSupport info) {
+                if (!info.isDrop()) {
+                    return false;
+                }
+
+                Transferable t = info.getTransferable();
+                try {
+                    if (t.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+                        List<File> data = (List<File>) t.getTransferData(DataFlavor.javaFileListFlavor);
+                        if (!data.isEmpty()) {
+                            for (var file : data) {
+                                last = Path.of(file.getAbsolutePath());
+                                addToArbol();
+                            }
+                            return true;
+                        }
+                    }
+                } catch (UnsupportedFlavorException e) {
+                    System.err.println("Flavor no soportado: " + e);
+                } catch (IOException e) {
+                    System.err.println("Error de entrada/salida: " + e);
+                }
+
+                return false;
+            }
+        });
     }
 
-    //metodo para establecer icon
+//metodo para establecer icon
     private void setIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/img\\icon.png")));
     }
@@ -234,6 +267,7 @@ public class Vista extends javax.swing.JFrame {
 
         // Establece el directorio inicial en el directorio del proyecto
         String currentDirectory = System.getProperty("user.dir");
+        currentDirectory += "\\data";
         fileChooser.setCurrentDirectory(new File(currentDirectory));
 
         int result = fileChooser.showOpenDialog(null);
@@ -247,7 +281,9 @@ public class Vista extends javax.swing.JFrame {
                 recorridos.setText("");
             } catch (IOException ex) {
                 System.out.println("Hubo error al añadir el arbol");
-                Logger.getLogger(Vista.class.getName()).log(Level.SEVERE, null, ex);
+                Logger
+                        .getLogger(Vista.class
+                                .getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_insertarBActionPerformed
@@ -335,16 +371,16 @@ public class Vista extends javax.swing.JFrame {
                     "BÚSQUEDA AVANZADA:", JOptionPane.INFORMATION_MESSAGE, categories, null, "");
         }
 
-        int min = 0;
-        int max = 0;
+        long min = 0;
+        long max = 0;
 
         //Verificar los numeros que sean validos
         while (true) {
             try {
                 String r = (String) JOptionPane.showInputDialog(null, "Ingrese el peso mínimo (mayor o igual a cero): ", "BÚSQUEDA AVANZADA: ", JOptionPane.INFORMATION_MESSAGE, categories, null, "");
                 String r2 = (String) JOptionPane.showInputDialog(null, "Ingrese el peso máximo (mayor a cero): ", "BÚSQUEDA AVANZADA: ", JOptionPane.INFORMATION_MESSAGE, categories, null, "");
-                min = Integer.parseInt(r);
-                max = Integer.parseInt(r2);
+                min = Long.parseLong(r);
+                max = Long.parseLong(r2);
 
                 if (min < 0 || max < 0) {
                     throw new InputMismatchException("Error al convertir el valor minimo");
@@ -407,6 +443,7 @@ public class Vista extends javax.swing.JFrame {
     private void addToArbol() throws IOException {
         Data add = new Data(last);
         arbolAVL.insertar(add);
+        updateArbol();
     }
 
     //Muestra la imagen del árbol

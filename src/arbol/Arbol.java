@@ -5,7 +5,6 @@
  */
 package arbol;
 
-import DataManagement.Data;
 import static java.awt.image.ImageObserver.HEIGHT;
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -117,214 +116,173 @@ public class Arbol<T extends Comparable<T>> implements Iterable<T> {
         }
     }
 
-    //Método para hallar la altura de un nodo
-    private int altura(Nodo nodo) {
-        if (nodo == null) {
-            return 0;
-        }
-
-        Queue<Nodo> queue = new LinkedList<>();
-        queue.offer(nodo);
-        int altura = 0;
-
-        while (!queue.isEmpty()) {
-            int nivelSize = queue.size();
-            altura++;
-
-            for (int i = 0; i < nivelSize; i++) {
-                Nodo actual = queue.poll();
-
-                if (actual.getLeft() != null) {
-                    queue.offer(actual.getLeft());
-                }
-
-                if (actual.getRight() != null) {
-                    queue.offer(actual.getRight());
-                }
-            }
-        }
-
-        return altura;
-    }
-
     //Retorna el Factor de equilibrio del Nodo
     public int obtenerFE(Nodo nodo) {
         if (nodo == null) {
             return 0;
         }
-
-        int alturaIzquierda = altura(nodo.getLeft());
-        int alturaDerecha = altura(nodo.getRight());
-
-        return alturaDerecha - alturaIzquierda;
+        return altura(nodo.getRight()) - altura(nodo.getLeft());
     }
 
-    //Rotacion Simple Derecha
-    public Nodo rotacionDerecha(Nodo c) {
-        Nodo aux = c.getLeft();
-        c.setLeft(aux.getRight());
-        aux.setRight(c);
-        c.setFe(obtenerFE(c));
-        aux.setFe(obtenerFE(aux));
-        return aux;
+    private Nodo<T> rotacionDerecha(Nodo<T> y) {
+        if (y == null || y.getLeft() == null) {
+            return y;
+        }
+        Nodo<T> x = y.getLeft();
+        Nodo<T> T2 = x.getRight();
+
+        // Realiza la rotación
+        x.setRight(y);
+        y.setLeft(T2);
+
+        // Actualiza padres
+        if (T2 != null) {
+            T2.setParent(y);
+        }
+        x.setParent(y.getParent());
+        y.setParent(x);
+
+        // Si y era la raíz, actualiza la raíz del árbol
+        if (x.getParent() == null) {
+            root = x;
+        } else if (x.getParent().getRight() == y) {
+            x.getParent().setRight(x);
+        } else {
+            x.getParent().setLeft(x);
+        }
+
+        // Actualiza alturas
+        actualizarAltura(y);
+        actualizarAltura(x);
+
+        return x; // Nuevo padre
     }
 
-    //Rotacion Simple Izquierda
-    public Nodo rotacionIzquierda(Nodo c) {
-        Nodo aux = c.getRight();
-        c.setRight(aux.getLeft());
-        aux.setLeft(c);
-        c.setFe(obtenerFE(c));
-        aux.setFe(obtenerFE(aux));
-        return aux;
+    //Rotacion simple izquierda
+    private Nodo<T> rotacionIzquierda(Nodo<T> x) {
+        if (x == null || x.getRight() == null) {
+            return x;
+        }
+        Nodo<T> y = x.getRight();
+        Nodo<T> T2 = y.getLeft();
+
+        // Realiza la rotación
+        y.setLeft(x);
+        x.setRight(T2);
+
+        // Actualiza padres
+        if (T2 != null) {
+            T2.setParent(x);
+        }
+        y.setParent(x.getParent());
+        x.setParent(y);
+
+        // Si x era la raíz, actualiza la raíz del árbol
+        if (y.getParent() == null) {
+            root = y;
+        } else if (y.getParent().getRight() == x) {
+            y.getParent().setRight(y);
+        } else {
+            y.getParent().setLeft(y);
+        }
+
+        // Actualiza alturas
+        actualizarAltura(x);
+        actualizarAltura(y);
+
+        return y; // Nuevo padre
     }
 
-    //Rotacion doble izquierda-derecha
-    public Nodo rotacionDobleIzquierda(Nodo c) {
-        Nodo temp;
-        c.setLeft(rotacionIzquierda(c.getLeft()));
-        temp = rotacionDerecha(c);
-        return temp;
+// Rotación Doble Izquierda-Derecha
+    private Nodo<T> rotacionDobleIzquierda(Nodo<T> x) {
+        x.setLeft(rotacionIzquierda(x.getLeft()));
+        return rotacionDerecha(x);
     }
 
-    //Rotacion doble derecha-izquierda
-    public Nodo rotacionDobleDerecha(Nodo c) {
-        Nodo temp;
-        c.setRight(rotacionDerecha(c.getRight()));
-        temp = rotacionIzquierda(c);
-        return temp;
+// Rotación Doble Derecha-Izquierda
+    private Nodo<T> rotacionDobleDerecha(Nodo<T> y) {
+        y.setRight(rotacionDerecha(y.getRight()));
+        return rotacionIzquierda(y);
     }
 
-    // Método para insertar
+    private int altura(Nodo nodo) {
+        if (nodo == null) {
+            return 0;
+        }
+        return nodo.getAlt();
+    }
+
+    private void actualizarAltura(Nodo<T> n) {
+        n.setAlt(1 + Math.max(altura(n.getLeft()), altura(n.getRight())));
+    }
+
     public void insertar(T elemento) {
-        Nodo nuevo = new Nodo(elemento);
-
         if (root == null) {
-            root = nuevo;
+            root = new Nodo<>(elemento);
             return;
         }
 
-        Stack<Nodo> stack = new Stack<>();
+        Stack<Nodo<T>> stack = new Stack<>();
+        Nodo<T> actual = root;
+        Nodo<T> padre = null;
 
-        Nodo actual = root;
-        Nodo padre = null;
-        boolean ladoIzquierdo = false;
-
+        // Buscar la posición para el nuevo nodo y mantener el camino
         while (actual != null) {
             stack.push(actual);
             padre = actual;
-
-            if (nuevo.getElement().compareTo(actual.getElement()) < 0) {
+            if (elemento.compareTo(actual.getElement()) < 0) {
                 actual = actual.getLeft();
-                ladoIzquierdo = true;
-            } else if (nuevo.getElement().compareTo(actual.getElement()) > 0) {
+            } else if (elemento.compareTo(actual.getElement()) > 0) {
                 actual = actual.getRight();
-                ladoIzquierdo = false;
             } else {
-                JOptionPane.showMessageDialog(null, "Nodo duplicado", "Error", HEIGHT, error);
-                return; //No se permiten duplicados
+                // Elemento ya existe, retornar sin insertar
+                return;
             }
         }
 
-        if (ladoIzquierdo) {
-            padre.setLeft(nuevo);
+        // Insertar el nuevo nodo
+        Nodo<T> nuevoNodo = new Nodo<>(elemento);
+        if (elemento.compareTo(padre.getElement()) < 0) {
+            padre.setLeft(nuevoNodo);
         } else {
-            padre.setRight(nuevo);
+            padre.setRight(nuevoNodo);
         }
+        nuevoNodo.setParent(padre);
 
+        // Balancear el árbol desde el nodo insertado hacia arriba
         while (!stack.isEmpty()) {
-            actual = stack.pop();
-            balancear(actual);
+            Nodo<T> nodo = stack.pop();
+            actualizarAltura(nodo);
+            balancear(nodo);
         }
-
     }
 
     // Función para balancear un nodo desbalanceado
-    private void balancear(Nodo nodo) {
-        int fe = obtenerFE(nodo);
-
-        if (fe > 1) {
-            //Subárbol izquierdo está desbalanceado
-            if (obtenerFE(nodo.getRight()) < 0) {
-                //Necesitamos una rotación Derecha-Izquierda
-                nodo.setRight(rotacionDerecha(nodo.getRight()));
-            }
-            //Rotación simple izquierda
-            nodo = rotacionIzquierda(nodo);
-
-        } else if (fe < -1) {
-            //Subárbol derecho está desbalanceado
-            if (obtenerFE(nodo.getLeft()) > 0) {
-                nodo.setLeft(rotacionIzquierda(nodo.getLeft()));
-            }
-            //Rotación simple derecha
-            nodo = rotacionDerecha(nodo);
+    private void balancear(Nodo<T> nodo) {
+        if (nodo == null) {
+            return;
         }
 
-        //Actualizar la raíz si es necesario
-        if (nodo.getParent() == null) {
-            root = nodo;
-        }
+        actualizarAltura(nodo);
+        int balance = obtenerFE(nodo);
 
+        // Caso LL
+        if (balance > 1 && obtenerFE(nodo.getRight()) > 0) {
+            rotacionIzquierda(nodo);
+        } // Caso RR
+        else if (balance < -1 && obtenerFE(nodo.getLeft()) < 0) {
+            rotacionDerecha(nodo);
+        } // Caso LR
+        else if (balance < -1 && obtenerFE(nodo.getLeft()) > 0) {
+            nodo.setLeft(rotacionIzquierda(nodo.getLeft()));
+            rotacionDerecha(nodo);
+        } // Caso RL
+        else if (balance > 1 && obtenerFE(nodo.getRight()) < 0) {
+            nodo.setRight(rotacionDerecha(nodo.getRight()));
+            rotacionIzquierda(nodo);
+        }
     }
 
-//    //Metodo para insertar al AVL
-//    public Nodo insertarAVL(Nodo nuevo, Nodo subAr) {
-//        Nodo nuevoPadre = subAr;
-//        if (nuevo.getElement().compareTo(subAr.getElement()) < 0) {
-//            if (subAr.getLeft() == null) {
-//                subAr.setLeft(nuevo);
-//            } else {
-//                subAr.setLeft(insertarAVL(nuevo, subAr.getLeft()));
-//                if ((obtenerFE(subAr.getLeft()) - obtenerFE(subAr.getRight()) == 2)) {
-//                    if (nuevo.getElement().compareTo(subAr.getLeft().getElement()) < 0) {
-//                        nuevoPadre = rotacionIzquierda(subAr);
-//                    } else {
-//                        nuevoPadre = rotacionDobleIzquierda(subAr);
-//                    }
-//                }
-//            }
-//
-//        } else if (nuevo.getElement().compareTo(subAr.getElement()) > 0) {
-//            if (subAr.getRight() == null) {
-//                subAr.setRight(nuevo);
-//            } else {
-//                subAr.setRight(insertarAVL(nuevo, subAr.getRight()));
-//                if ((obtenerFE(subAr.getRight()) - obtenerFE(subAr.getLeft()) == 2)) {
-//                    if (nuevo.getElement().compareTo(subAr.getRight().getElement()) > 0) {
-//                        nuevoPadre = rotacionDerecha(subAr);
-//                    } else {
-//                        nuevoPadre = rotacionDobleDerecha(root);
-//                    }
-//
-//                }
-//            }
-//        } else {
-//            System.out.println("Nodo duplicado");
-//            JOptionPane.showMessageDialog(null, "Nodo duplicado", "Error", HEIGHT, error);
-//        }
-//        //Actualizamos la altura
-//        if ((subAr.getLeft() == null) && (subAr.getRight() != null)) {
-//            subAr.setFe((subAr.getRight().getFe() + 1));
-//        } else if ((subAr.getRight() == null) && (subAr.getLeft() != null)) {
-//            subAr.setFe((subAr.getLeft().getFe() + 1));
-//        } else {
-//            subAr.setFe((Math.max(obtenerFE(subAr.getLeft()), obtenerFE(subAr.getRight())) + 1));
-//        }
-//        return nuevoPadre;
-//    }
-//
-//    //Método para insertar
-//    public void insertar(T elemento) {
-//        Nodo nuevo = new Nodo(elemento);
-//        if (root == null) {
-//            root = nuevo;
-//        } else {
-//            root = insertarAVL(nuevo, root);
-//        }
-//    }
-    
-    
     //Halla el predecesor
     public Nodo pred(Nodo r) {
         Nodo p = r.getLeft();
@@ -383,24 +341,23 @@ public class Arbol<T extends Comparable<T>> implements Iterable<T> {
             return subAr;
         }
 
-        // Actualizar la altura (factor de equilibrio) del nodo actual
-        subAr.setFe(Math.max(obtenerFE(subAr.getLeft()), obtenerFE(subAr.getRight())) + 1);
-
-        // Rebalancear el árbol
+        actualizarAltura(subAr);
         int balance = obtenerFE(subAr);
-        if (balance > 1 && obtenerFE(subAr.getLeft()) >= 0) {
-            return rotacionDerecha(subAr);
-        }
-        if (balance > 1 && obtenerFE(subAr.getLeft()) < 0) {
+
+        // Caso LL
+        if (balance > 1 && obtenerFE(subAr.getRight()) > 0) {
+            rotacionIzquierda(subAr);
+        } // Caso RR
+        else if (balance < -1 && obtenerFE(subAr.getLeft()) < 0) {
+            rotacionDerecha(subAr);
+        } // Caso LR
+        else if (balance < -1 && obtenerFE(subAr.getLeft()) > 0) {
             subAr.setLeft(rotacionIzquierda(subAr.getLeft()));
-            return rotacionDerecha(subAr);
-        }
-        if (balance < -1 && obtenerFE(subAr.getRight()) <= 0) {
-            return rotacionIzquierda(subAr);
-        }
-        if (balance < -1 && obtenerFE(subAr.getRight()) > 0) {
+            rotacionDerecha(subAr);
+        } // Caso RL
+        else if (balance > 1 && obtenerFE(subAr.getRight()) < 0) {
             subAr.setRight(rotacionDerecha(subAr.getRight()));
-            return rotacionIzquierda(subAr);
+            rotacionIzquierda(subAr);
         }
 
         return subAr;
@@ -437,11 +394,6 @@ public class Arbol<T extends Comparable<T>> implements Iterable<T> {
         } else {
             return buscar(r.getLeft(), element);
         }
-    }
-
-    // Función para obtener el máximo de dos enteros
-    int max(int a, int b) {
-        return (a > b) ? a : b;
     }
 
     //Función para obtener el nivel del nodo
